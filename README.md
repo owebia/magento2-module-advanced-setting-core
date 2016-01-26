@@ -9,8 +9,12 @@ http://htmlpreview.github.io/?https://github.com/owebia/module-shipping-core/blo
 ## License
 
 Copyright © 2016 Owebia. All rights reserved.
+
 No warranty, explicit or implicit, provided.
+
 Files can not be copied and/or distributed without the express permission of Owebia.
 
+
 Icons:
+
 https://fortawesome.github.io/Font-Awesome/
