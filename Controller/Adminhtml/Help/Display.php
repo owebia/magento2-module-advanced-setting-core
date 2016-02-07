@@ -34,23 +34,25 @@ class Display extends \Magento\Backend\App\Action
      */
     public function execute()
     {
+        /** @var \Magento\Framework\Module\Dir\Reader $reader */
+        $reader = $this->_objectManager->get('Magento\Framework\Module\Dir\Reader');
+        $viewDir = $reader->getModuleDir(\Magento\Framework\Module\Dir::MODULE_VIEW_DIR, 'Owebia_ShippingCore');
+
+        $locale = $this->_localeResolver->getLocale();
+
+        $defaultPath = $viewDir . '/doc_en_US.html';
+        $localePath = str_replace('en_US', $locale, $defaultPath);
+
         /** @var Filesystem $filesystem */
         $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
-        $readInterface = $filesystem->getDirectoryRead(DirectoryList::APP);
-        
-        /** @var Resolver $localeResolver */
-        $localeResolver = $this->_objectManager->get('Magento\Framework\Locale\Resolver');
-        $locale = $localeResolver->getLocale();
-        
-        $defaultPath = 'code/Owebia/ShippingCore/view/doc_en_US.html';
-        $localePath = str_replace('en_US', $locale, $defaultPath);
-        
-        $path = $readInterface->isFile($localePath) ? $localePath : $defaultPath;
-        
+        $readInterface = $filesystem->getDirectoryRead(DirectoryList::ROOT);
+        $docPath = $readInterface->isFile($localePath) ? $localePath : $defaultPath;
+        $docRelativePath = $readInterface->getRelativePath($docPath);
+
         return $this->resultRawFactory->create()
             ->setHttpResponseCode(200)
             ->setHeader('Pragma', 'public', true)
             ->setHeader('Content-type', 'text/html; charset=UTF-8', true)
-            ->setContents($readInterface->readFile($path));
+            ->setContents($readInterface->readFile($docRelativePath));
     }
 }
