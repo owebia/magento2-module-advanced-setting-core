@@ -18,9 +18,14 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     const UNDEFINED_INDEX = 301;
 
     /**
+     * @var boolean
+     */
+    protected $debug = false;
+
+    /**
      * @var array
      */
-    protected $debug = [];
+    protected $debugOutput = [];
 
     /**
      * @var array
@@ -80,9 +85,17 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @return string
      */
-    public function getDebug()
+    public function getDebugOutput()
     {
-        return implode("\n", $this->debug);
+        return implode("\n", $this->debugOutput);
+    }
+
+    /**
+     * @param boolean $debug
+     */
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
     }
 
     /**
@@ -117,7 +130,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function reset()
     {
-        $this->debug = [];
+        $this->debugOutput = [];
         $this->errors = [];
         $this->counter = 1;
     }
@@ -129,12 +142,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function debug($node, $result)
     {
-        if (true) {
+        if ($this->debug) {
             $right = $this->prettyPrint($result);
             $left = $this->prettyPrint($node);
             $uid = 'p' . uniqid();
             if ($left !== $right) {
-                $this->debug[] = '<div data-target="#' . $uid . '"><pre class=php>'
+                $this->debugOutput[] = '<div data-target="#' . $uid . '"><pre class=php>'
                         . htmlspecialchars($left)
                     . '</pre>'
                     . '<div class="hidden target" id="' . $uid . '"><pre class="php result">'

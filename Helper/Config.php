@@ -78,6 +78,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         
         $this->registry = $registry;
         $this->evaluator->reset();
+        $this->evaluator->setDebug($debug);
         $this->evaluator->setRegistry($registry);
         $this->evaluator->setCallbackManager($this);
 
@@ -126,7 +127,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             $this->evaluator->evaluate($node);
             if ($debug) {
-                $msg = $this->evaluator->getDebug();
+                $msg = $this->evaluator->getDebugOutput();
                 $this->addDebug($node, $msg, 'panel-info');
             }
         } catch (\Exception $e) {
@@ -139,7 +140,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->result[] = $error;
             }
             if ($debug) {
-                $msg = $this->evaluator->getDebug() . $e->getMessage();
+                $msg = $this->evaluator->getDebugOutput() . $e->getMessage();
                 $this->addDebug($node, $msg, 'panel-danger');
             }
         }
