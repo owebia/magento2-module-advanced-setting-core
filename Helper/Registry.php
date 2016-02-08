@@ -75,7 +75,10 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
             'registry' => $this,
             'request' => $this->request
         ], $arguments);
-        return $this->wrapperFactory->create("Owebia\\ShippingCore\\Model\\Wrapper\\$className", $args);
+        if (strpos($className, "\\") === false) {
+            $className = "Owebia\\ShippingCore\\Model\\Wrapper\\$className";
+        }
+        return $this->wrapperFactory->create($className, $args);
     }
 
     /**
