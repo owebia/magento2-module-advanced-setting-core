@@ -96,9 +96,9 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
                 return $data;
             } elseif ($data instanceof \Magento\Quote\Model\Quote\Item) {
                 return $this->create('QuoteItem', [ 'data' => $data ]);
-            } elseif ($data instanceof \Magento\Catalog\Model\Product) {
+            } elseif ($data instanceof \Magento\Catalog\Api\Data\ProductInterface) {
                 return $this->create('Product', [ 'data' => $data ]);
-            } elseif ($data instanceof \Magento\Catalog\Model\Category) {
+            } elseif ($data instanceof \Magento\Catalog\Api\Data\CategoryInterface) {
                 return $this->create('Category', [ 'data' => $data ]);
             } else {
                 return $this->create('SourceWrapper', [ 'data' => $data ]);
