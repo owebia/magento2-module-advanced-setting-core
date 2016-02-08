@@ -9,12 +9,12 @@ class ProductStockItem extends SourceWrapper
 {
 
     /**
-     * @var \Magento\CatalogInventory\Model\StockRegistry
+     * @var \Magento\CatalogInventory\Api\StockRegistryInterface
      */
     protected $stockRegistry;
 
     /**
-     * @param \Magento\CatalogInventory\Model\StockRegistry $stockRegistry
+     * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
@@ -22,7 +22,7 @@ class ProductStockItem extends SourceWrapper
      * @param mixed $data
      */
     public function __construct(
-        \Magento\CatalogInventory\Model\StockRegistry $stockRegistry,
+        \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
@@ -34,7 +34,7 @@ class ProductStockItem extends SourceWrapper
     }
 
     /**
-     * @return \Magento\CatalogInventory\Model\Stock\Item
+     * @return \Magento\CatalogInventory\Api\Data\StockItemInterface
      */
     protected function loadSource()
     {

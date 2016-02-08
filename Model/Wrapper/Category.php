@@ -9,12 +9,12 @@ class Category extends SourceWrapper
 {
 
     /**
-     * @var \Magento\Catalog\Model\CategoryRepository
+     * @var \Magento\Catalog\Api\CategoryRepositoryInterface
      */
     protected $categoryRespository;
 
     /**
-     * @param \Magento\Catalog\Model\CategoryRepository $categoryRespository
+     * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRespository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
@@ -22,7 +22,7 @@ class Category extends SourceWrapper
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Catalog\Model\CategoryRepository $categoryRespository,
+        \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRespository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
@@ -34,11 +34,11 @@ class Category extends SourceWrapper
     }
 
     /**
-     * @return \Magento\Catalog\Model\Category
+     * @return \Magento\Catalog\Api\Data\CategoryInterface
      */
     protected function loadSource()
     {
-        if ($this->data instanceof \Magento\Catalog\Model\Category) {
+        if ($this->data instanceof \Magento\Catalog\Api\Data\CategoryInterface) {
             return $this->data;
         }
         return $this->categoryRespository

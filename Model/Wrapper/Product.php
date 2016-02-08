@@ -41,11 +41,11 @@ class Product extends SourceWrapper
     }
 
     /**
-     * @return \Magento\Catalog\Model\Product
+     * @return \Magento\Catalog\Api\Data\ProductInterface
      */
     protected function loadSource()
     {
-        if ($this->data instanceof \Magento\Catalog\Model\Product) {
+        if ($this->data instanceof \Magento\Catalog\Api\Data\ProductInterface) {
             return $this->data;
         }
         return $this->productRespository
@@ -77,19 +77,19 @@ class Product extends SourceWrapper
             case 'stock_item':
                 return $this->createWrapper([ 'product_id' => (int) $this->{'entity_id'} ], 'ProductStockItem');
             case 'category_id':
-                /** @var \Magento\Catalog\Model\Product $product */
+                /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
                 $product = $this->getSource();
                 return $product->getCategoryId();
             case 'category':
-                /** @var \Magento\Catalog\Model\Product $product */
+                /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
                 $product = $this->getSource();
                 return $product->getCategory();
             case 'category_ids':
-                /** @var \Magento\Catalog\Model\Product $product */
+                /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
                 $product = $this->getSource();
                 return $this->getSource()->getCategoryIds();
             case 'categories':
-                /** @var \Magento\Catalog\Model\Product $product */
+                /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
                 $product = $this->getSource();
                 $categories = [];
                 foreach ($product->getCategoryCollection() as $category) {

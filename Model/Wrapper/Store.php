@@ -21,12 +21,12 @@ class Store extends SourceWrapper
     protected $additionalAttributes = [ 'name', 'address', 'phone' ];
 
     /**
-     * @var \Magento\Store\Model\StoreRepository
+     * @var \Magento\Store\Api\StoreRepositoryInterface
      */
     protected $storeRespository;
 
     /**
-     * @param \Magento\Store\Model\StoreRepository $storeRespository
+     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRespository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
@@ -34,7 +34,7 @@ class Store extends SourceWrapper
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Store\Model\StoreRepository $storeRespository,
+        \Magento\Store\Api\StoreRepositoryInterface $storeRespository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
