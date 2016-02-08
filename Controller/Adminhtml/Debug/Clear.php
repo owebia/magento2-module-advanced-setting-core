@@ -19,9 +19,9 @@ class Clear extends \Magento\Backend\App\Action
     {
         /** @var Filesystem $filesystem */
         $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
-        $writeInterface = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $writeInterface = $filesystem->getDirectoryWrite(DirectoryList::LOG);
 
-        $writeInterface->writeFile('/var/log/owebia_shippingcore.log', '');
+        $writeInterface->writeFile('owebia_shippingcore.log', '');
 
         return $this->_redirect('owebia-shippingcore/debug/index');
     }
