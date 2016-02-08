@@ -18,6 +18,29 @@ class CustomerGroup extends SourceWrapper
     );
 
     /**
+     * @var \Magento\Customer\Model\GroupRegistry
+     */
+    protected $groupRegistry;
+
+    /**
+     * @param \Magento\Customer\Model\GroupRegistry $groupRegistry
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
+     * @param \Owebia\ShippingCore\Helper\Registry $registry
+     * @param mixed $data
+     */
+    public function __construct(
+        \Magento\Customer\Model\GroupRegistry $groupRegistry,
+        \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Quote\Model\Quote\Address\RateRequest $request,
+        \Owebia\ShippingCore\Helper\Registry $registry,
+        $data = null
+    ) {
+        parent::__construct($objectManager, $request, $registry, $data);
+        $this->groupRegistry = $groupRegistry;
+    }
+
+    /**
      * @return \Magento\Customer\Model\Group
      */
     protected function loadSource()
@@ -31,6 +54,7 @@ class CustomerGroup extends SourceWrapper
                 $customerGroupId = $customerGroupId2;
             }
         }
-        return $this->objectManager->create('Magento\Customer\Model\Group')->load($customerGroupId);
+        return $this->groupRegistry
+            ->retrieve($customerGroupId);
     }
 }

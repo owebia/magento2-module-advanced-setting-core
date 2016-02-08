@@ -16,6 +16,29 @@ class Product extends SourceWrapper
     ];
 
     /**
+     * @var \Magento\Catalog\Model\ProductRepository
+     */
+    protected $productRespository;
+
+    /**
+     * @param \Magento\Catalog\Model\ProductRepository $productRespository
+     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
+     * @param \Owebia\ShippingCore\Helper\Registry $registry
+     * @param mixed $data
+     */
+    public function __construct(
+        \Magento\Catalog\Model\ProductRepository $productRespository,
+        \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Quote\Model\Quote\Address\RateRequest $request,
+        \Owebia\ShippingCore\Helper\Registry $registry,
+        $data = null
+    ) {
+        parent::__construct($objectManager, $request, $registry, $data);
+        $this->productRespository = $productRespository;
+    }
+
+    /**
      * @return \Magento\Catalog\Model\Product
      */
     protected function loadSource()
@@ -23,9 +46,8 @@ class Product extends SourceWrapper
         if ($this->data instanceof \Magento\Catalog\Model\Product) {
             return $this->data;
         }
-        return $this->objectManager
-            ->create('Magento\Catalog\Model\Product')
-            ->load($this->data['id']);
+        return $this->productRespository
+            ->get($this->data['id']);
     }
 
     /**
@@ -35,9 +57,8 @@ class Product extends SourceWrapper
      */
     public function load()
     {
-        $this->source = $this->objectManager
-            ->create('Magento\Catalog\Model\Product')
-            ->load($this->entity_id);
+        $this->source = $this->productRespository
+            ->get($this->entity_id);
         $this->cache->setData([]);
         return $this;
     }
