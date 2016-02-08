@@ -16,6 +16,7 @@ class Category extends SourceWrapper
     /**
      * @param \Magento\Catalog\Model\CategoryRepository $categoryRespository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\ShippingCore\Helper\Registry $registry
      * @param mixed $data
@@ -23,11 +24,12 @@ class Category extends SourceWrapper
     public function __construct(
         \Magento\Catalog\Model\CategoryRepository $categoryRespository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\ShippingCore\Helper\Registry $registry,
         $data = null
     ) {
-        parent::__construct($objectManager, $request, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
         $this->categoryRespository = $categoryRespository;
     }
 

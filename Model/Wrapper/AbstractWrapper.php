@@ -44,23 +44,36 @@ abstract class AbstractWrapper
     protected $registry;
 
     /**
+     * @var \Magento\Backend\Model\Auth\Session
+     */
+    protected $backendAuthSession;
+
+    /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\ShippingCore\Helper\Registry $registry
      * @param mixed $data
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\ShippingCore\Helper\Registry $registry,
         $data = null
     ) {
         $this->objectManager = $objectManager;
+        $this->backendAuthSession = $backendAuthSession;
         $this->request = $request;
         $this->registry = $registry;
         $this->logger = $this->objectManager->get('Owebia\ShippingCore\Logger\Logger');
         $this->data = $data;
         $this->cache = new \Magento\Framework\DataObject();
+    }
+
+    protected function isBackendOrder()
+    {
+        return $this->backendAuthSession->isLoggedIn();
     }
 
     /**

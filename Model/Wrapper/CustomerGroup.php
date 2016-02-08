@@ -25,6 +25,7 @@ class CustomerGroup extends SourceWrapper
     /**
      * @param \Magento\Customer\Model\GroupRegistry $groupRegistry
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\ShippingCore\Helper\Registry $registry
      * @param mixed $data
@@ -32,11 +33,12 @@ class CustomerGroup extends SourceWrapper
     public function __construct(
         \Magento\Customer\Model\GroupRegistry $groupRegistry,
         \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\ShippingCore\Helper\Registry $registry,
         $data = null
     ) {
-        parent::__construct($objectManager, $request, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
         $this->groupRegistry = $groupRegistry;
     }
 
@@ -45,14 +47,15 @@ class CustomerGroup extends SourceWrapper
      */
     protected function loadSource()
     {
-        $customerGroupId = $this->objectManager->get('Magento\Customer\Model\Session')->getCustomerGroupId();
-        if ($customerGroupId == 0) { // For admin orders
-            $customerGroupId2 = $this->objectManager->get('Magento\Backend\Model\Session\Quote')
+        if ($this->isBackendOrder()) { // For backend orders
+            $customerGroupId = $this->objectManager
+                ->get('Magento\Backend\Model\Session\Quote')
                 ->getQuote()
                 ->getCustomerGroupId();
-            if (isset($customerGroupId2)) {
-                $customerGroupId = $customerGroupId2;
-            }
+        } else {
+            $customerGroupId = $this->objectManager
+                ->get('Magento\Customer\Model\Session')
+                ->getCustomerGroupId();
         }
         return $this->groupRegistry
             ->retrieve($customerGroupId);

@@ -14,17 +14,19 @@ class Info extends ArrayWrapper
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\ShippingCore\Helper\Registry $registry
      * @param string $carrierCode
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
+        \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\ShippingCore\Helper\Registry $registry,
         $carrierCode = null
     ) {
-        parent::__construct($objectManager, $request, $registry, [
+        parent::__construct($objectManager, $backendAuthSession, $request, $registry, [
             'server_os'       => PHP_OS,
             'server_software' => $_SERVER['SERVER_SOFTWARE'],
             'php_version'     => PHP_VERSION,

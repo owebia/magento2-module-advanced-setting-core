@@ -13,10 +13,12 @@ class Quote extends SourceWrapper
      */
     protected function loadSource()
     {
-        /** @var \Magento\Checkout\Model\Session $session */
-        $session = $this->objectManager->get('Magento\Checkout\Model\Session');
-        if (!$session->getQuoteId()) {
-            return null; // Avoid infinite loop
+        if ($this->isBackendOrder()) { // For backend orders
+            $session = $this->objectManager
+                ->get('Magento\Backend\Model\Session\Quote');
+        } else {
+            $session = $this->objectManager
+                ->get('Magento\Checkout\Model\Session');
         }
         return $session->getQuote();
     }
