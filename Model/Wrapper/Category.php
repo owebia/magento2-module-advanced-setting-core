@@ -52,9 +52,8 @@ class Category extends SourceWrapper
      */
     public function load()
     {
-        $this->source = $this->objectManager
-            ->create('Magento\Catalog\Model\Category')
-            ->load($this->entity_id);
+        $this->source = $this->categoryRespository
+            ->get($this->entity_id);
         $this->cache->setData([]);
         return $this;
     }
