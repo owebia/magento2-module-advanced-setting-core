@@ -11,14 +11,9 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var \Owebia\ShippingCore\Model\WrapperFactory
      */
-    protected $storeManager;
-
-    /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    protected $objectManager;
+    protected $wrapperFactory;
 
     /**
      * @var \Magento\Quote\Model\Quote\Address\RateRequest
@@ -35,16 +30,13 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      *
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param \Owebia\ShippingCore\Model\WrapperFactory $wrapperFactory
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\ObjectManagerInterface $objectManager
+        \Owebia\ShippingCore\Model\WrapperFactory $wrapperFactory
     ) {
-        $this->storeManager = $storeManager;
-        $this->objectManager = $objectManager;
+        $this->wrapperFactory = $wrapperFactory;
         parent::__construct($context);
     }
 
@@ -80,11 +72,10 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     public function create($className, array $arguments = array())
     {
         $args = array_merge([
-            'storeManager' => $this->storeManager,
             'registry' => $this,
             'request' => $this->request
         ], $arguments);
-        return $this->objectManager->create("Owebia\\ShippingCore\\Model\\Wrapper\\$className", $args);
+        return $this->wrapperFactory->create("Owebia\\ShippingCore\\Model\\Wrapper\\$className", $args);
     }
 
     /**

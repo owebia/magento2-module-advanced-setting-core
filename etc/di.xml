@@ -19,4 +19,7 @@
             </argument>
         </arguments>
     </type>
+    <!-- This can be used to override a wrapper class
+    <preference for="Owebia\ShippingCore\Model\Wrapper\Customer" type="Vendor\Module\Path\To\Customer\Wrapper" />
+    -->
 </config>
