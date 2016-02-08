@@ -63,6 +63,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function parse($configuration, \Owebia\ShippingCore\Helper\Registry $registry, $debug = false)
     {
+        $t0 = microtime(true);
         ini_set('xdebug.max_nesting_level', 3000);
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP5);
@@ -87,7 +88,10 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
             $this->parseNode($node, $debug);
             $this->evaluator->reset();
         }
-        
+        $t1 = microtime(true);
+        if ($debug) {
+            $this->debugLogger->debug("Duration " . round($t1 - $t0, 2) . " s");
+        }
         return $this->result;
     }
 
