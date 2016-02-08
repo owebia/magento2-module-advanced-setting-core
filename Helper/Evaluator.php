@@ -100,17 +100,17 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param string $msg
-     * @param \PhpParser\Node $node
+     * @param mixed $expr
      * @throws \Exception
      */
-    protected function error($msg, \PhpParser\Node $node)
+    protected function error($msg, $expr)
     {
         $trace = debug_backtrace(false);
         $this->errors[] = [
             'level' => 'ERROR',
             'msg' => $msg,
-            // 'code' => $this->prettyPrint($node),
-            'expression' => $node,
+            // 'code' => $this->prettyPrint($expr),
+            'expression' => $expr,
             'line' => $trace[0]['line']
         ];
         throw new \Exception($msg);
