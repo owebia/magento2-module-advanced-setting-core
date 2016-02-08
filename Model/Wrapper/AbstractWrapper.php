@@ -34,6 +34,11 @@ abstract class AbstractWrapper
     protected $objectManager;
 
     /**
+     * @var \Magento\Backend\Model\Auth\Session
+     */
+    protected $backendAuthSession;
+
+    /**
      * @var \Magento\Quote\Model\Quote\Address\RateRequest
      */
     protected $request;
@@ -42,11 +47,6 @@ abstract class AbstractWrapper
      * @var \Owebia\ShippingCore\Helper\Registry
      */
     protected $registry;
-
-    /**
-     * @var \Magento\Backend\Model\Auth\Session
-     */
-    protected $backendAuthSession;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
