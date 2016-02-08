@@ -9,15 +9,6 @@ class CustomerGroup extends SourceWrapper
 {
 
     /**
-     * @var array
-     */
-    protected $aliasMap = array(
-        'id'   => 'customer_group_id',
-        'code' => 'customer_group_code',
-        'name' => 'customer_group_code'
-    );
-
-    /**
      * @var \Magento\Customer\Api\GroupRepositoryInterface
      */
     protected $groupRepository;

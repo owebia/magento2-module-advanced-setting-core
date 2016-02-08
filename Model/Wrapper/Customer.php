@@ -9,13 +9,6 @@ class Customer extends SourceWrapper
 {
 
     /**
-     * @var array
-     */
-    protected $aliasMap = array(
-        'id' => 'entity_id'
-    );
-
-    /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
      */
     protected $customerRepository;

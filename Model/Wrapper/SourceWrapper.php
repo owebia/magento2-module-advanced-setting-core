@@ -39,8 +39,12 @@ class SourceWrapper extends AbstractWrapper
     protected function getKeys()
     {
         $source = $this->getSource();
-        if ($source) {
+        if ($source instanceof \Magento\Framework\DataObject) {
             return array_keys($source->getData());
+        } elseif ($source instanceof \Magento\Framework\Api\AbstractSimpleObject) {
+            // Not efficient but only for debug
+            // see method _underscore in \Magento\Framework\DataObject
+            return array_keys($source->__toArray());
         } else {
             return [];
         }
@@ -72,7 +76,15 @@ class SourceWrapper extends AbstractWrapper
         if (!$source) {
             return null;
         }
-        return $source->getData($key);
+        if ($source instanceof \Magento\Framework\DataObject) {
+            return $source->getData($key);
+        } elseif ($source instanceof \Magento\Framework\Api\AbstractSimpleObject) {
+            $method = 'get' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
+            if (method_exists($source, $method)) {
+                return $source->{$method}();
+            }
+        }
+        return null;
     }
 
     /**
