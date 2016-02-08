@@ -18,12 +18,12 @@ class CustomerGroup extends SourceWrapper
     );
 
     /**
-     * @var \Magento\Customer\Model\GroupRegistry
+     * @var \Magento\Customer\Api\GroupRepositoryInterface
      */
-    protected $groupRegistry;
+    protected $groupRepository;
 
     /**
-     * @param \Magento\Customer\Model\GroupRegistry $groupRegistry
+     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
@@ -31,7 +31,7 @@ class CustomerGroup extends SourceWrapper
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Customer\Model\GroupRegistry $groupRegistry,
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
@@ -39,11 +39,11 @@ class CustomerGroup extends SourceWrapper
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
-        $this->groupRegistry = $groupRegistry;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
-     * @return \Magento\Customer\Model\Group
+     * @return \Magento\Customer\Api\Data\GroupInterface
      */
     protected function loadSource()
     {
@@ -57,7 +57,7 @@ class CustomerGroup extends SourceWrapper
                 ->get('Magento\Customer\Model\Session')
                 ->getCustomerGroupId();
         }
-        return $this->groupRegistry
-            ->retrieve($customerGroupId);
+        return $this->groupRepository
+            ->getById($customerGroupId);
     }
 }

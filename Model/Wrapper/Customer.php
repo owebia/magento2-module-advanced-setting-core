@@ -16,12 +16,12 @@ class Customer extends SourceWrapper
     );
 
     /**
-     * @var \Magento\Customer\Model\CustomerRegistry
+     * @var \Magento\Customer\Api\CustomerRepositoryInterface
      */
-    protected $customerRegistry;
+    protected $customerRepository;
 
     /**
-     * @param \Magento\Customer\Model\CustomerRegistry $customerRegistry
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
@@ -29,7 +29,7 @@ class Customer extends SourceWrapper
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Customer\Model\CustomerRegistry $customerRegistry,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
@@ -37,11 +37,11 @@ class Customer extends SourceWrapper
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
-        $this->customerRegistry = $customerRegistry;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
-     * @return \Magento\Customer\Model\Customer
+     * @return \Magento\Customer\Api\Data\CustomerInterface
      */
     protected function loadSource()
     {
@@ -55,7 +55,7 @@ class Customer extends SourceWrapper
                 ->get('Magento\Customer\Model\Session')
                 ->getCustomerId();
         }
-        return $this->customerRegistry
-            ->retrieve($customerId);
+        return $this->customerRepository
+            ->getById($customerId);
     }
 }
