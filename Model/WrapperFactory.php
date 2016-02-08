@@ -28,7 +28,7 @@ class WrapperFactory
      * @return \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper
      */
     public function create($instanceName, array $data = [])
-    {echo get_class($this->objectManager);
+    {
         return $this->objectManager->create($instanceName, $data);
     }
 }
