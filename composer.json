@@ -15,8 +15,7 @@
         "magento/module-store": "100.0.*",
         "magento/module-variable": "100.0.*",
         "magento/magento-composer-installer": "*",
-        "nikic/php-parser": "2.0.*",
-        "ext-tokenizer": "*"
+        "nikic/php-parser": "2.0.*"
     },
     "type": "magento2-module",
     "version": "1.0.0",
