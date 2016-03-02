@@ -140,7 +140,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @param mixed $result
      * @return mixed
      */
-    protected function debug($node, $result)
+    protected function debug($node, $result, $wrap = true)
     {
         if ($this->debug) {
             $right = $this->prettyPrint($result);
@@ -155,7 +155,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                     . '</pre></div></div>';
             }
         }
-        return $this->wrap($result);
+        return $wrap ? $this->wrap($result) : $result;
     }
 
     /**
@@ -227,6 +227,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             if ($stmt instanceof \PhpParser\Node\Stmt\Return_) {
                 return $stmt;
             }
+
             $result = $this->evaluate($stmt);
             // echo "<pre>";/*var_export($stmt);*/var_export($result);echo "\n<br/><br/>\n\n";
             if (is_array($result)) {
@@ -519,19 +520,19 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             case "PhpParser\\Node\\Stmt\\If_":
                 $cond = $this->evl($expr->cond);
                 if ($cond) {
-                    return $this->debug($expr, $this->evaluateStmts($expr->stmts));
+                    return $this->debug($expr, $this->evaluateStmts($expr->stmts), $wrap = false);
                 }
                 
                 if (isset($expr->elseifs)) {
                     foreach ($expr->elseifs as $elseif) {
                         $cond = $this->evl($elseif->cond);
                         if ($cond) {
-                            return $this->debug($expr, $this->evaluateStmts($elseif->stmts));
+                            return $this->debug($expr, $this->evaluateStmts($elseif->stmts), $wrap = false);
                         }
                     }
                 }
                 if (isset($expr->else)) {
-                    return $this->debug($expr, $this->evaluateStmts($expr->else->stmts));
+                    return $this->debug($expr, $this->evaluateStmts($expr->else->stmts), $wrap = false);
                 }
                 return $this->debug($expr, null);
             case "PhpParser\\Node\\Stmt\\Foreach_":
