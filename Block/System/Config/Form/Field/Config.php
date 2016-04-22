@@ -93,16 +93,16 @@ class Config extends AbstractField
                     <span class="page-title">Owebia Shipping Configuration</span>
                 </div>
                 <div class="owb_toolbar col-l-4 col-m-6">
-                    <a target="_blank" class="icon icon-help" href="{$this->getUrl('owebia-shippingcore/help/display')}" title="{$this->translate('Help')}"><span>{$this->translate('Help')}</span></a>
+                    <a target="_blank" class="icon icon-help" href="{$this->getUrl('owebia_shippingcore/help/display')}" title="{$this->translate('Help')}"><span>{$this->translate('Help')}</span></a>
                     <a href="#" class="icon icon-check" onclick="fs_$elementId(false);" title="{$this->translate('Reduce')}"><span>{$this->translate('Validate')}</span></a>
                 </div>
             </div>
         </div>
         <div class="owb_fs_hidden owb_toolbar">
             <a href="#" class="icon icon-edit" onclick="fs_$elementId(true);" title="{$this->translate('Edit')}"><span>{$this->translate('Edit')}</span></a>
-            <a target="_blank" class="icon icon-help" href="{$this->getUrl('owebia-shippingcore/help/display')}" title="{$this->translate('Help')}"><span>{$this->translate('Help')}</span></a>
-            <!--<a target="_blank" class="icon icon-check" href="{$this->getUrl('owebia-shippingcore/help/test')}" title="{$this->translate('Test')}"><span>{$this->translate('Test')}</span></a>-->
-            <a target="_blank" class="icon icon-svg" href="{$this->getUrl('owebia-shippingcore/debug/index')}" title="{$this->translate('View Debug')}">
+            <a target="_blank" class="icon icon-help" href="{$this->getUrl('owebia_shippingcore/help/display')}" title="{$this->translate('Help')}"><span>{$this->translate('Help')}</span></a>
+            <!--<a target="_blank" class="icon icon-check" href="{$this->getUrl('owebia_shippingcore/help/test')}" title="{$this->translate('Test')}"><span>{$this->translate('Test')}</span></a>-->
+            <a target="_blank" class="icon icon-svg" href="{$this->getUrl('owebia_shippingcore/debug/index')}" title="{$this->translate('View Debug')}">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="23" viewBox="0 0 416 448">
                 <g id="icomoon-ignore">
                 </g>

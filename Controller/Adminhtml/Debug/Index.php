@@ -96,7 +96,7 @@ div[data-target]:before {
 </style>
 </head>
 <body>
-<a href="{$this->getUrl('owebia-shippingcore/debug/clear')}" class="clearlog">&times; Clear Log</a>
+<a href="{$this->getUrl('owebia_shippingcore/debug/clear')}" class="clearlog">&times; Clear Log</a>
 <div class=container-fluid>
     <div class=row>
         <div class=col-sm-6 id="root">

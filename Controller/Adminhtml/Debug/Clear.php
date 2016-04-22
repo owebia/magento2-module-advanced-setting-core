@@ -23,6 +23,6 @@ class Clear extends \Magento\Backend\App\Action
 
         $writeInterface->writeFile('owebia_shippingcore.log', '');
 
-        return $this->_redirect('owebia-shippingcore/debug/index');
+        return $this->_redirect('owebia_shippingcore/debug/index');
     }
 }
