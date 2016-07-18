@@ -1,6 +1,6 @@
 # Description
 
-Module for Magento 2 (required by owebia/module-shipping-free)
+Module for Magento 2 required by [owebia/module-shipping-free](https://github.com/owebia/module-shipping-free)
 
 ## Documentation
 
