@@ -14,7 +14,7 @@
         "magento/module-quote": "100.*",
         "magento/module-store": "100.*",
         "magento/module-variable": "100.*",
-        "magento/magento-composer-installer": "*",
+        "magento/magento-composer-installer": "^0.1.11",
         "nikic/php-parser": "2.0.*"
     },
     "type": "magento2-module",
