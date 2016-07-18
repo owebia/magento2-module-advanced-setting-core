@@ -18,10 +18,15 @@ class Product extends SourceWrapper
     /**
      * @var \Magento\Catalog\Model\ProductRepository
      */
-    protected $productRespository;
+    protected $productRepository;
 
     /**
-     * @param \Magento\Catalog\Model\ProductRepository $productRespository
+     * @var array
+     */
+    protected $attributes = null;
+
+    /**
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
@@ -29,7 +34,7 @@ class Product extends SourceWrapper
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Catalog\Model\ProductRepository $productRespository,
+        \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
@@ -37,7 +42,7 @@ class Product extends SourceWrapper
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
-        $this->productRespository = $productRespository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -48,8 +53,8 @@ class Product extends SourceWrapper
         if ($this->data instanceof \Magento\Catalog\Api\Data\ProductInterface) {
             return $this->data;
         }
-        return $this->productRespository
-            ->get($this->data['id']);
+        return $this->productRepository
+            ->getById($this->data['id']);
     }
 
     /**
@@ -59,10 +64,34 @@ class Product extends SourceWrapper
      */
     public function load()
     {
-        $this->source = $this->productRespository
-            ->get($this->entity_id);
+        $this->source = $this->productRepository
+            ->getById($this->entity_id);
         $this->cache->setData([]);
         return $this;
+    }
+
+    protected function loadIfRequired($attributeCode)
+    {
+        if (!isset($this->attributes)) {
+            $source = $this->getSource();
+            $this->attributes = $source->getAttributes();
+        }
+        // If attribute data is not loaded, load it
+        if (isset($this->attributes[$attributeCode]) && !$this->getSource()->hasData($attributeCode)) {
+            $this->load();
+        }
+        return $this;
+    }
+
+    /**
+     * @return string | null
+     */
+    public function getAttributeText($attributeCode)
+    {
+        $this->loadIfRequired($attributeCode);
+        /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
+        $product = $this->getSource();
+        return $this->wrap($product->getAttributeText($attributeCode));
     }
 
     /**
@@ -97,6 +126,7 @@ class Product extends SourceWrapper
                 }
                 return $categories;
             default:
+                $this->loadIfRequired($key);
                 return parent::loadData($key);
         }
     }

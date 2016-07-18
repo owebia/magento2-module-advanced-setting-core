@@ -19,6 +19,8 @@
         #sidebar{position:fixed;top:0;left:0;padding-top:10px;}
         #sidebar a{display:block;color:#716b7a;padding:5px 20px;}#sidebar a:hover,#sidebar a:focus{text-decoration:none;background-color:#e5e3e9;}
         #sidebar .nav .nav a{padding-top:3px;padding-bottom:3px;padding-left:30px;font-size:90%;}@media screen and (max-width: 1600px){#sidebar{display:none}}
+        .highlight{background:#ffa;padding:4px;line-height:2em;}
+        .highlight code{background:#ffa;}
     </style>
 </head>
 <body>
@@ -66,6 +68,13 @@
         <div class="jumbotron">
             <p><a href="https://en.store.owebia.com/magento2-module-shipping-free.html" target=_blank>Owebia Shipping Free</a> allows you to manage one carrier.<br/>To manage more carriers, you can get a license for the extension <a href="https://en.store.owebia.com/magento2-module-unlimited-carriers.html" target=_blank>Unlimited Carriers</a> by Owebia.</p>
         </div>
+    </div>
+
+    <div id="whats_new">
+        <h2>What's new?</h2>
+        <ul>
+            <li><code class=php>$item->product->getAttributeText('attribute_code')</code> for product attributes of type select</li>
+        </ul>
     </div>
 
     <div id="quick_start">
@@ -256,6 +265,10 @@ addMethod('__auto__', [
                                     <li><code class=php>weight</code></li>
                                     <li><code class=php>price</code> (as defined in Magento backoffice)</li>
                                     <li><code class=php>special_price</code>: (as defined in Magento backoffice)</li>
+                                    <li><code class=php>tax_class_id</code>: the taxclass id</li>
+                                    <li><code class=php>getAttributeText('tax_class_id')</code>: the tax class name<br/>
+                                        <span class="highlight">To get the text value of an attribute of type select, use <code class=php>getAttributeText('attribute_code')</code></span>
+                                    </li>
                                     <li>…</li>
                                 </ul>
                             </li>
