@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Helper;
+namespace Owebia\AdvancedSettingCore\Helper;
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
 
@@ -11,7 +11,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
     /**
-     * @var \Owebia\ShippingCore\Model\WrapperFactory
+     * @var \Owebia\AdvancedSettingCore\Model\WrapperFactory
      */
     protected $wrapperFactory;
 
@@ -30,11 +30,11 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      *
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Owebia\ShippingCore\Model\WrapperFactory $wrapperFactory
+     * @param \Owebia\AdvancedSettingCore\Model\WrapperFactory $wrapperFactory
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Owebia\ShippingCore\Model\WrapperFactory $wrapperFactory
+        \Owebia\AdvancedSettingCore\Model\WrapperFactory $wrapperFactory
     ) {
         $this->wrapperFactory = $wrapperFactory;
         parent::__construct($context);
@@ -44,7 +44,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @param \Owebia\ShippingFree\Model\Carrier $carrier
      * @param \Magento\Quote\Model\Quote\Address\RateRequest|null $request
-     * @return \Owebia\ShippingCore\Helper\Registry
+     * @return \Owebia\AdvancedSettingCore\Helper\Registry
      */
     public function init(\Owebia\ShippingFree\Model\Carrier $carrier, RateRequest $request = null)
     {
@@ -67,7 +67,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param string $className
      * @param array $arguments
-     * @return \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper
+     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
      */
     public function create($className, array $arguments = array())
     {
@@ -76,7 +76,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
             'request' => $this->request
         ], $arguments);
         if (strpos($className, "\\") === false) {
-            $className = "Owebia\\ShippingCore\\Model\\Wrapper\\$className";
+            $className = "Owebia\\AdvancedSettingCore\\Model\\Wrapper\\$className";
         }
         return $this->wrapperFactory->create($className, $args);
     }
@@ -93,7 +93,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         } elseif ($type == 'array') {
             return $data;
         } elseif ($type == 'object') {
-            if ($data instanceof \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper) {
+            if ($data instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper) {
                 return $data;
             } elseif ($data instanceof \Closure) {
                 return $data;

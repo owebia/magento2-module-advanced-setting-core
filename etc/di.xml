@@ -6,20 +6,20 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Owebia\ShippingCore\Logger\Handler">
+    <type name="Owebia\AdvancedSettingCore\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
     </type>
-    <type name="Owebia\ShippingCore\Logger\Logger">
+    <type name="Owebia\AdvancedSettingCore\Logger\Logger">
         <arguments>
-            <argument name="name" xsi:type="string">Owebia_ShippingCore</argument>
+            <argument name="name" xsi:type="string">Owebia_AdvancedSettingCore</argument>
             <argument name="handlers"  xsi:type="array">
-                <item name="system" xsi:type="object">Owebia\ShippingCore\Logger\Handler</item>
+                <item name="system" xsi:type="object">Owebia\AdvancedSettingCore\Logger\Handler</item>
             </argument>
         </arguments>
     </type>
     <!-- This can be used to override a wrapper class
-    <preference for="Owebia\ShippingCore\Model\Wrapper\Customer" type="Vendor\Module\Path\To\Customer\Wrapper" />
+    <preference for="Owebia\AdvancedSettingCore\Model\Wrapper\Customer" type="Vendor\Module\Path\To\Customer\Wrapper" />
     -->
 </config>

@@ -1,10 +1,6 @@
 # Description
 
-Module for Magento 2 required by [owebia/module-shipping-free](https://github.com/owebia/module-shipping-free)
-
-## Documentation
-
-http://htmlpreview.github.io/?https://github.com/owebia/module-shipping-core/blob/master/view/doc_en_US.html
+Helper Module for Magento 2 required by [owebia/magento2-module-advanced-shipping-setting](https://github.com/owebia/magento2-module-advanced-shipping-setting)
 
 ## License
 

@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class ProductStockItem extends SourceWrapper
 {
@@ -18,7 +18,7 @@ class ProductStockItem extends SourceWrapper
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
-     * @param \Owebia\ShippingCore\Helper\Registry $registry
+     * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
     public function __construct(
@@ -26,7 +26,7 @@ class ProductStockItem extends SourceWrapper
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
-        \Owebia\ShippingCore\Helper\Registry $registry,
+        \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);

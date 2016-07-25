@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Helper;
+namespace Owebia\AdvancedSettingCore\Helper;
 
 use PhpParser\ParserFactory;
 
@@ -26,29 +26,29 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     protected $debug = true;
 
     /**
-     * @var \Owebia\ShippingCore\Helper\Evaluator
+     * @var \Owebia\AdvancedSettingCore\Helper\Evaluator
      */
     protected $evaluator;
 
     /**
-     * @var \Owebia\ShippingCore\Logger\Logger
+     * @var \Owebia\AdvancedSettingCore\Logger\Logger
      */
     protected $debugLogger;
 
     /**
-     * @var \Owebia\ShippingCore\Helper\Registry
+     * @var \Owebia\AdvancedSettingCore\Helper\Registry
      */
     protected $registry;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Owebia\ShippingCore\Helper\Evaluator $evaluator
-     * @param \Owebia\ShippingCore\Logger\Logger $debugLogger
+     * @param \Owebia\AdvancedSettingCore\Helper\Evaluator $evaluator
+     * @param \Owebia\AdvancedSettingCore\Logger\Logger $debugLogger
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Owebia\ShippingCore\Helper\Evaluator $evaluator,
-        \Owebia\ShippingCore\Logger\Logger $debugLogger
+        \Owebia\AdvancedSettingCore\Helper\Evaluator $evaluator,
+        \Owebia\AdvancedSettingCore\Logger\Logger $debugLogger
     ) {
         parent::__construct($context);
         $this->evaluator = $evaluator;
@@ -57,11 +57,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param string $configuration
-     * @param \Owebia\ShippingCore\Helper\Registry $registry
+     * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param boolean $debug
      * @return array
      */
-    public function parse($configuration, \Owebia\ShippingCore\Helper\Registry $registry, $debug = false)
+    public function parse($configuration, \Owebia\AdvancedSettingCore\Helper\Registry $registry, $debug = false)
     {
         $t0 = microtime(true);
         ini_set('xdebug.max_nesting_level', 3000);
@@ -96,7 +96,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return \Owebia\ShippingCore\Model\Wrapper\ArrayWrapper
+     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\ArrayWrapper
      * @throws \Exception
      */
     public function addMethod()

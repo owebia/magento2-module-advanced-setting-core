@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class Store extends SourceWrapper
 {
@@ -30,7 +30,7 @@ class Store extends SourceWrapper
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
-     * @param \Owebia\ShippingCore\Helper\Registry $registry
+     * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
     public function __construct(
@@ -38,7 +38,7 @@ class Store extends SourceWrapper
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
-        \Owebia\ShippingCore\Helper\Registry $registry,
+        \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
@@ -56,7 +56,7 @@ class Store extends SourceWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {

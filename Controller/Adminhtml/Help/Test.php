@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Controller\Adminhtml\Help;
+namespace Owebia\AdvancedSettingCore\Controller\Adminhtml\Help;
 
 class Test extends \Magento\Backend\App\Action
 {
@@ -13,9 +13,9 @@ class Test extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $helper = $this->_objectManager->create('Owebia\ShippingCore\Helper\Config');
-        /** @var \Owebia\ShippingCore\Helper\Registry $registry */
-        $registry = $this->_objectManager->create('Owebia\ShippingCore\Helper\Registry');
+        $helper = $this->_objectManager->create('Owebia\AdvancedSettingCore\Helper\Config');
+        /** @var \Owebia\AdvancedSettingCore\Helper\Registry $registry */
+        $registry = $this->_objectManager->create('Owebia\AdvancedSettingCore\Helper\Registry');
         $config = <<<'EOT'
 
 // First shipping method

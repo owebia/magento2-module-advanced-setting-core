@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Owebia\ShippingCore\Controller\Adminhtml\Debug;
+namespace Owebia\AdvancedSettingCore\Controller\Adminhtml\Debug;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
@@ -38,7 +38,7 @@ class Index extends \Magento\Backend\App\Action
         $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
         $readInterface = $filesystem->getDirectoryRead(DirectoryList::ROOT);
 
-        $content = $readInterface->readFile('/var/log/owebia_shippingcore.log');
+        $content = $readInterface->readFile('/var/log/owebia_advancedsettingcore.log');
         $content = preg_replace('@</pre>[\r\n]*<pre@', '</pre><pre', $content);
         if (!$content || !trim($content)) {
             $content = "<p>The debug log is empty</p>";
@@ -96,7 +96,7 @@ div[data-target]:before {
 </style>
 </head>
 <body>
-<a href="{$this->getUrl('owebia_shippingcore/debug/clear')}" class="clearlog">&times; Clear Log</a>
+<a href="{$this->getUrl('owebia_advancedsettingcore/debug/clear')}" class="clearlog">&times; Clear Log</a>
 <div class=container-fluid>
     <div class=row>
         <div class=col-sm-6 id="root">

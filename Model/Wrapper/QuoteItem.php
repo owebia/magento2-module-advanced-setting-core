@@ -4,7 +4,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class QuoteItem extends SourceWrapper
 {
@@ -15,7 +15,7 @@ class QuoteItem extends SourceWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {

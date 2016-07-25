@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Owebia\ShippingCore\Block\System\Config\Form\Field;
+namespace Owebia\AdvancedSettingCore\Block\System\Config\Form\Field;
 
 class AbstractField extends \Magento\Config\Block\System\Config\Form\Field
 {

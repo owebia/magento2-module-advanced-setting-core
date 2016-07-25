@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class Variable extends SourceWrapper
 {
@@ -19,7 +19,7 @@ class Variable extends SourceWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {
@@ -34,7 +34,7 @@ class Variable extends SourceWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::getAdditionalData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::getAdditionalData()
      */
     protected function getAdditionalData()
     {

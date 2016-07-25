@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class Info extends ArrayWrapper
 {
@@ -16,14 +16,14 @@ class Info extends ArrayWrapper
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
-     * @param \Owebia\ShippingCore\Helper\Registry $registry
+     * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param string $carrierCode
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Magento\Quote\Model\Quote\Address\RateRequest $request,
-        \Owebia\ShippingCore\Helper\Registry $registry,
+        \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $carrierCode = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $request, $registry, [
@@ -36,7 +36,7 @@ class Info extends ArrayWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {

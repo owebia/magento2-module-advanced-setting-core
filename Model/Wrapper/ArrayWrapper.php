@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class ArrayWrapper extends AbstractWrapper implements \ArrayAccess
 {
@@ -48,7 +48,7 @@ class ArrayWrapper extends AbstractWrapper implements \ArrayAccess
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {

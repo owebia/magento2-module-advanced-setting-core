@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Logger;
+namespace Owebia\AdvancedSettingCore\Logger;
 
 class Logger extends \Monolog\Logger
 {

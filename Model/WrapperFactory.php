@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model;
+namespace Owebia\AdvancedSettingCore\Model;
 
 class WrapperFactory
 {
@@ -25,7 +25,7 @@ class WrapperFactory
      *
      * @param string $instanceName
      * @param array $data
-     * @return \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper
+     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
      */
     public function create($instanceName, array $data = [])
     {

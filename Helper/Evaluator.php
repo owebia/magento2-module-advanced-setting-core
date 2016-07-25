@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Helper;
+namespace Owebia\AdvancedSettingCore\Helper;
 
 /**
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -38,7 +38,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected $counter = 1;
 
     /**
-     * @var \Owebia\ShippingCore\Helper\Registry
+     * @var \Owebia\AdvancedSettingCore\Helper\Registry
      */
     protected $allowedFunctions = [
         // Arrays
@@ -68,12 +68,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     ];
 
     /**
-     * @var \Owebia\ShippingCore\Helper\Registry
+     * @var \Owebia\AdvancedSettingCore\Helper\Registry
      */
     protected $registry = null;
 
     /**
-     * @var \Owebia\ShippingCore\Helper\Config
+     * @var \Owebia\AdvancedSettingCore\Helper\Config
      */
     protected $callbackManager = null;
 
@@ -207,7 +207,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 return rtrim($this->getPrettyPrinter()->prettyPrint([
                     $value
                 ]), ';');
-            } elseif ($value instanceof \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper) {
+            } elseif ($value instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper) {
                 return (string) $value;
             } else {
                 return "/** @var " . get_class($value) . " \$obj */ \$obj";
@@ -281,20 +281,20 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param \Owebia\ShippingCore\Helper\Registry $registry
-     * @return \Owebia\ShippingCore\Helper\Evaluator
+     * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @return \Owebia\AdvancedSettingCore\Helper\Evaluator
      */
-    public function setRegistry(\Owebia\ShippingCore\Helper\Registry $registry)
+    public function setRegistry(\Owebia\AdvancedSettingCore\Helper\Registry $registry)
     {
         $this->registry = $registry;
         return $this;
     }
 
     /**
-     * @param \Owebia\ShippingCore\Helper\Config $callbackManager
-     * @return \Owebia\ShippingCore\Helper\Evaluator
+     * @param \Owebia\AdvancedSettingCore\Helper\Config $callbackManager
+     * @return \Owebia\AdvancedSettingCore\Helper\Evaluator
      */
-    public function setCallbackManager(\Owebia\ShippingCore\Helper\Config $callbackManager)
+    public function setCallbackManager(\Owebia\AdvancedSettingCore\Helper\Config $callbackManager)
     {
         $this->callbackManager = $callbackManager;
         return $this;
@@ -592,7 +592,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         //$v=$variable;echo "var: ".var_export(is_object($v)?get_class($v):$v,true).".{$propertyName};\n\n";
         if (is_array($variable) && isset($variable[$propertyName])) {
             return $this->debug($expr, $variable[$propertyName]);
-        } elseif (is_object($variable) && $variable instanceof \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper) {
+        } elseif (is_object($variable) && $variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper) {
             return $this->debug($expr, $variable->$propertyName);
         } elseif (is_object($variable) && isset($variable->{$propertyName})) {
             return $this->debug($expr, $variable->{$propertyName});
@@ -625,7 +625,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         }
         if (is_object($variable) && isset($variable->{$methodName}) && is_callable($variable->{$methodName})) {
             $method = $variable->{$methodName};
-        } elseif ($variable instanceof \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper && is_callable([
+        } elseif ($variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper && is_callable([
             $variable,
             $methodName
         ])) {

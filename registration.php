@@ -2,6 +2,6 @@
 
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'Owebia_ShippingCore',
+    'Owebia_AdvancedSettingCore',
     __DIR__
 );

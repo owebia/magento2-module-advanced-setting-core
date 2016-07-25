@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Model\Wrapper;
+namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class SourceWrapper extends AbstractWrapper
 {
@@ -34,7 +34,7 @@ class SourceWrapper extends AbstractWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::getKeys()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::getKeys()
      */
     protected function getKeys()
     {
@@ -52,7 +52,7 @@ class SourceWrapper extends AbstractWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::help()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::help()
      */
     public function help()
     {
@@ -68,7 +68,7 @@ class SourceWrapper extends AbstractWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\ShippingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {

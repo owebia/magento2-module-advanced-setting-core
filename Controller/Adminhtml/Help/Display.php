@@ -3,7 +3,7 @@
  * Copyright © 2016 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Owebia\ShippingCore\Controller\Adminhtml\Help;
+namespace Owebia\AdvancedSettingCore\Controller\Adminhtml\Help;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
@@ -36,7 +36,7 @@ class Display extends \Magento\Backend\App\Action
     {
         /** @var \Magento\Framework\Module\Dir\Reader $reader */
         $reader = $this->_objectManager->get('Magento\Framework\Module\Dir\Reader');
-        $viewDir = $reader->getModuleDir(\Magento\Framework\Module\Dir::MODULE_VIEW_DIR, 'Owebia_ShippingCore');
+        $viewDir = $reader->getModuleDir(\Magento\Framework\Module\Dir::MODULE_VIEW_DIR, 'Owebia_AdvancedSettingCore');
 
         $locale = $this->_localeResolver->getLocale();
 

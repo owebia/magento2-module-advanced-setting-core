@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Owebia\ShippingCore\Controller\Adminhtml\Debug;
+namespace Owebia\AdvancedSettingCore\Controller\Adminhtml\Debug;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
@@ -21,8 +21,8 @@ class Clear extends \Magento\Backend\App\Action
         $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
         $writeInterface = $filesystem->getDirectoryWrite(DirectoryList::LOG);
 
-        $writeInterface->writeFile('owebia_shippingcore.log', '');
+        $writeInterface->writeFile('owebia_advancedsettingcore.log', '');
 
-        return $this->_redirect('owebia_shippingcore/debug/index');
+        return $this->_redirect('owebia_advancedsettingcore/debug/index');
     }
 }
