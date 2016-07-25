@@ -17,7 +17,6 @@ class Category extends SourceWrapper
      * @param \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRespository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
@@ -25,11 +24,10 @@ class Category extends SourceWrapper
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRespository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
-        \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
         $this->categoryRespository = $categoryRespository;
     }
 

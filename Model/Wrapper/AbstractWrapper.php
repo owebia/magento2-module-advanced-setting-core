@@ -39,11 +39,6 @@ abstract class AbstractWrapper
     protected $backendAuthSession;
 
     /**
-     * @var \Magento\Quote\Model\Quote\Address\RateRequest
-     */
-    protected $request;
-
-    /**
      * @var \Owebia\AdvancedSettingCore\Helper\Registry
      */
     protected $registry;
@@ -51,20 +46,17 @@ abstract class AbstractWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
-        \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
         $this->objectManager = $objectManager;
         $this->backendAuthSession = $backendAuthSession;
-        $this->request = $request;
         $this->registry = $registry;
         $this->logger = $this->objectManager->get('Owebia\AdvancedSettingCore\Logger\Logger');
         $this->data = $data;
@@ -110,6 +102,12 @@ abstract class AbstractWrapper
         } else {
             return $value;
         }
+    }
+
+    public function getStoreId()
+    {
+        return $this->registry->get('request')
+            ->__get('store_id');
     }
 
     /**

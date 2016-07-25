@@ -24,7 +24,7 @@ class Variable extends SourceWrapper
     protected function loadData($key)
     {
         $source = $this->getSource();
-        $source->setStoreId($this->request->getData('store_id'));
+        $source->setStoreId($this->getStoreId());
         $variable = $source->loadByCode($key);
         if (!$variable) {
             return null;

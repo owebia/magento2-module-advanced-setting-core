@@ -5,8 +5,6 @@
  */
 namespace Owebia\AdvancedSettingCore\Helper;
 
-use Magento\Quote\Model\Quote\Address\RateRequest;
-
 class Registry extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
@@ -14,11 +12,6 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Owebia\AdvancedSettingCore\Model\WrapperFactory
      */
     protected $wrapperFactory;
-
-    /**
-     * @var \Magento\Quote\Model\Quote\Address\RateRequest
-     */
-    protected $request;
 
     /**
      * @var array
@@ -41,26 +34,21 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     *
-     * @param \Owebia\ShippingFree\Model\Carrier $carrier
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest|null $request
      * @return \Owebia\AdvancedSettingCore\Helper\Registry
      */
-    public function init(\Owebia\ShippingFree\Model\Carrier $carrier, RateRequest $request = null)
+    public function init(\Magento\Framework\DataObject $request)
     {
-        $this->request = $request;
         $this->data = [
             []
         ];
-        $this->register('info', $this->create('Info', [
-            'carrierCode' => isset($carrier) ? $carrier->getCarrierCode() : null
-        ]));
         $this->register('quote', $this->create('Quote'));
         $this->register('customer', $this->create('Customer'));
         $this->register('customer_group', $this->create('CustomerGroup'));
         $this->register('variable', $this->create('Variable'));
         $this->register('store', $this->create('Store'));
-        $this->register('request', $this->create('Request'));
+        $this->register('request', $this->create('SourceWrapper', [
+            'data' => $request,
+        ]));
         return $this;
     }
 
@@ -73,7 +61,6 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $args = array_merge([
             'registry' => $this,
-            'request' => $this->request
         ], $arguments);
         if (strpos($className, "\\") === false) {
             $className = "Owebia\\AdvancedSettingCore\\Model\\Wrapper\\$className";

@@ -73,7 +73,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected $registry = null;
 
     /**
-     * @var \Owebia\AdvancedSettingCore\Helper\Config
+     * @var object
      */
     protected $callbackManager = null;
 
@@ -291,21 +291,13 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param \Owebia\AdvancedSettingCore\Helper\Config $callbackManager
+     * @param object $callbackManager
      * @return \Owebia\AdvancedSettingCore\Helper\Evaluator
      */
-    public function setCallbackManager(\Owebia\AdvancedSettingCore\Helper\Config $callbackManager)
+    public function setCallbackManager($callbackManager)
     {
         $this->callbackManager = $callbackManager;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    protected function fnHelp()
-    {
-        return "The result of the help call is visible in the backoffice";
     }
 
     /**
@@ -660,8 +652,8 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             ];
             $isFunctionAllowed = in_array($functionName, $this->allowedFunctions)
                 || in_array($functionName, array_keys($map));
-            if (is_callable(array($this->callbackManager, $functionName))) {
-                $functionName = array($this->callbackManager, $functionName);
+            if (is_callable(array($this->callbackManager, $functionName . 'Callback'))) {
+                $functionName = array($this->callbackManager, $functionName . 'Callback');
             } else {
                 if (!$isFunctionAllowed && function_exists($functionName)) {
                     return $this->error("Unauthorized function '{$functionName}'", $expr);

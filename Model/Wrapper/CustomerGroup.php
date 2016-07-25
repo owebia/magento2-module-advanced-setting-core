@@ -17,7 +17,6 @@ class CustomerGroup extends SourceWrapper
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
@@ -25,11 +24,10 @@ class CustomerGroup extends SourceWrapper
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
-        \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
         $this->groupRepository = $groupRepository;
     }
 

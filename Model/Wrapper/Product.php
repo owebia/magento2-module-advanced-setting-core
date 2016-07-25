@@ -29,7 +29,6 @@ class Product extends SourceWrapper
      * @param \Magento\Catalog\Model\ProductRepository $productRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
@@ -37,11 +36,10 @@ class Product extends SourceWrapper
         \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
-        \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
         $this->productRepository = $productRepository;
     }
 

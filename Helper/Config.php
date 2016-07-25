@@ -16,11 +16,6 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     protected $parsingCache = [];
 
     /**
-     * @var array
-     */
-    protected $result = [];
-
-    /**
      * @var boolean
      */
     protected $debug = true;
@@ -58,10 +53,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param string $configuration
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param object $callbackManager
      * @param boolean $debug
      * @return array
      */
-    public function parse($configuration, \Owebia\AdvancedSettingCore\Helper\Registry $registry, $debug = false)
+    public function parse($configuration, \Owebia\AdvancedSettingCore\Helper\Registry $registry, $callbackManager, $debug = false)
     {
         $t0 = microtime(true);
         ini_set('xdebug.max_nesting_level', 3000);
@@ -81,43 +77,17 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         $this->evaluator->reset();
         $this->evaluator->setDebug($debug);
         $this->evaluator->setRegistry($registry);
-        $this->evaluator->setCallbackManager($this);
+        $this->evaluator->setCallbackManager($callbackManager);
 
-        $this->result = [];
         foreach ($stmts as $node) {
-            $this->parseNode($node, $debug);
+            $this->parseNode($node, $callbackManager, $debug);
             $this->evaluator->reset();
         }
         $t1 = microtime(true);
         if ($debug) {
             $this->debugLogger->debug("Duration " . round($t1 - $t0, 2) . " s");
         }
-        return $this->result;
-    }
-
-    /**
-     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\ArrayWrapper
-     * @throws \Exception
-     */
-    public function addMethod()
-    {
-        $args = func_get_args();
-        if (count($args) != 2) {
-            throw new \Exception("Invalid arguments count for addMethod FuncCall");
-        }
-        $methodId = array_shift($args);
-        if (!is_string($methodId) || !preg_match('#^[a-z][a-z0-9_]*$#', $methodId)) {
-            throw new \Exception("Invalid first argument for addMethod FuncCall: the first argument"
-                . " must be a string and match the following pattern : ^[a-z][a-z0-9_]*$");
-        }
-
-        $methodOptions = array_shift($args);
-        if (!is_array($methodOptions)) {
-            throw new \Exception("Invalid second argument for addMethod FuncCall:"
-                . " the second argument must be an array");
-        }
-        $this->result[$methodId] = (object) $methodOptions;
-        return $this->registry->create('ArrayWrapper', [ 'data' => $methodOptions ]);
+        return $this;
     }
 
     /**
@@ -125,9 +95,8 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @param bool $debug
      * @throws \Exception
      */
-    protected function parseNode($node, $debug)
+    protected function parseNode($node, $callbackManager, $debug)
     {
-        $methodId = null;
         try {
             $this->evaluator->evaluate($node);
             if ($debug) {
@@ -135,14 +104,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
                 $this->addDebug($node, $msg, 'panel-info');
             }
         } catch (\Exception $e) {
-            $error = (object) array(
-                'error' => 'Invalid statement'
-            );
-            if (isset($methodId)) {
-                $this->result[$methodId] = $error;
-            } else {
-                $this->result[] = $error;
-            }
+            $callbackManager->appendParsingError('Error ' . $e->getMessage());
             if ($debug) {
                 $msg = $this->evaluator->getDebugOutput() . $e->getMessage();
                 $this->addDebug($node, $msg, 'panel-danger');

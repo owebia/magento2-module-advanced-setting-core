@@ -17,7 +17,6 @@ class ProductStockItem extends SourceWrapper
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
@@ -25,11 +24,10 @@ class ProductStockItem extends SourceWrapper
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
-        \Magento\Quote\Model\Quote\Address\RateRequest $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $request, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
         $this->stockRegistry = $stockRegistry;
     }
 
