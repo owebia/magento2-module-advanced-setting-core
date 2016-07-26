@@ -16,9 +16,10 @@ abstract class Config extends AbstractField
     protected function getHeader(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $elementId = $element->getHtmlId();
+        $hash = md5($elementId);
         return <<<EOD
     <script>
-        function fs_$elementId(toggle) {
+        function fs_$hash(toggle) {
             require([
                 'jquery'
             ], function($) {
@@ -90,11 +91,11 @@ abstract class Config extends AbstractField
         <div id="owb_fh_$elementId" class="owb_fs_only">
             <div class="row">
                 <div class="col-l-8 col-m-6">
-                    <span class="page-title">{$this->getFullscreenTitle($element)}</span>
+                    <span class="page-title">{$this->escapeHtml($this->getFullscreenTitle($element))}</span>
                 </div>
                 <div class="owb_toolbar col-l-4 col-m-6">
-                    <a target="_blank" class="icon icon-help" href="{$this->getHelpUrl($element)}" title="{$this->translate('Help')}"><span>{$this->translate('Help')}</span></a>
-                    <a href="#" class="icon icon-check" onclick="fs_$elementId(false);" title="{$this->translate('Reduce')}"><span>{$this->translate('Validate')}</span></a>
+                    <a target="_blank" class="icon icon-help" href="{$this->escapeHtml($this->getHelpUrl($element))}" title="{$this->escapeHtml(__('Help'))}"><span>{$this->escapeHtml(__('Help'))}</span></a>
+                    <a href="#" class="icon icon-check" onclick="fs_$hash(false);" title="{$this->escapeHtml(__('Reduce'))}"><span>{$this->escapeHtml(__('Reduce'))}</span></a>
                 </div>
             </div>
         </div>
@@ -111,10 +112,11 @@ EOD;
     protected function getToolbarContent(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $elementId = $element->getHtmlId();
+        $hash = md5($elementId);
         return <<<EOD
-            <a href="#" class="icon icon-edit" onclick="fs_$elementId(true);" title="{$this->translate('Edit')}"><span>{$this->translate('Edit')}</span></a>
-            <a target="_blank" class="icon icon-help" href="{$this->getHelpUrl($element)}" title="{$this->translate('Help')}"><span>{$this->translate('Help')}</span></a>
-            <a target="_blank" class="icon icon-svg" href="{$this->getUrl('owebia_advancedsettingcore/debug/index')}" title="{$this->translate('View Debug')}">
+            <a href="#" class="icon icon-edit" onclick="fs_$hash(true);" title="{$this->escapeHtml(__('Edit'))}"><span>{$this->escapeHtml(__('Edit'))}</span></a>
+            <a target="_blank" class="icon icon-help" href="{$this->escapeHtml($this->getHelpUrl($element))}" title="{$this->escapeHtml(__('Help'))}"><span>{$this->escapeHtml(__('Help'))}</span></a>
+            <a target="_blank" class="icon icon-svg" href="{$this->getUrl('owebia_advancedsettingcore/debug/index')}" title="{$this->escapeHtml(__('View Debug'))}">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="23" viewBox="0 0 416 448">
                 <g id="icomoon-ignore">
                 </g>
