@@ -24,7 +24,7 @@ class SourceWrapper extends AbstractWrapper
     /**
      * @return \Magento\Framework\DataObject
      */
-    protected function getSource()
+    public function getSource()
     {
         if ($this->source === false) {
             $this->source = $this->loadSource();

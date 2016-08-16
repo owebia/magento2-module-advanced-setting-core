@@ -625,14 +625,26 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 $variable,
                 $methodName
             ];
+        } elseif ($variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper && is_callable([
+            $variable->getSource(),
+            $methodName
+        ])) {
+            $method = [
+                $variable->getSource(),
+                $methodName
+            ];
         } elseif (is_array($variable) && isset($variable[$methodName]) && is_callable($variable[$methodName])) {
             $method = $variable[$methodName];
         }
         if (!$method) {
-            return $this->error("Unsupported MethodCall expression - Unkown method", $expr);
+            return $this->error("Unsupported MethodCall expression - Unkown method" . ( is_callable([
+            $variable,
+            $methodName
+        ]) ? '1' : '0'), $expr);
         }
         $args = $this->evaluateArgs($expr);
         $result = call_user_func_array($method, $args);
+        $result = $this->wrap($result);
         return $this->debug($expr, $result);
     }
 
@@ -652,7 +664,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             ];
             $isFunctionAllowed = in_array($functionName, $this->allowedFunctions)
                 || in_array($functionName, array_keys($map));
-            if (is_callable(array($this->callbackManager, $functionName . 'Callback'))) {
+            if (method_exists($this->callbackManager, $functionName . 'Callback')) {
                 $functionName = array($this->callbackManager, $functionName . 'Callback');
             } else {
                 if (!$isFunctionAllowed && function_exists($functionName)) {
