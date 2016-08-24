@@ -21,7 +21,7 @@ class QuoteItem extends SourceWrapper
     {
         switch ($key) {
             case 'options':
-                $options = array();
+                $options = [];
                 $helper = $this->objectManager->get('Magento\Catalog\Helper\Product\Configuration');
                 $customOptions = $helper->getCustomOptions($this->getSource());
                 if ($customOptions) {

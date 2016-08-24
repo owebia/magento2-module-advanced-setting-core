@@ -57,7 +57,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
      * @param array $arguments
      * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
      */
-    public function create($className, array $arguments = array())
+    public function create($className, array $arguments = [])
     {
         $args = array_merge([
             'registry' => $this,
@@ -94,7 +94,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->create('SourceWrapper', [ 'data' => $data ]);
             }
         } else {
-            throw new \Exception("Unsupported type $type");
+            throw new \Magento\Framework\Exception\LocalizedException("Unsupported type $type");
         }
     }
 
@@ -108,12 +108,9 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         if (! isset($scopeIndex)) {
             $scopeIndex = count($this->data) - 1;
         }
-        // echo 'get ' . $name . ', ' . $scopeIndex . ' ';
         if (isset($this->data[$scopeIndex][$name])) {
-            // echo "ok ;\n";
             return $this->data[$scopeIndex][$name];
         }
-        // echo "ko ;\n";
         return null;
     }
 
@@ -133,7 +130,6 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function register($name, $value, $override = false)
     {
-        // echo 'register ' . $name . " ;\n";
         $lastScopeIndex = count($this->data) - 1;
         if (!$override && isset($this->data[$lastScopeIndex][$name])) {
             return;

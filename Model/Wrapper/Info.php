@@ -15,18 +15,20 @@ class Info extends ArrayWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
+     * @param \Magento\Framework\HTTP\PhpEnvironment\Request $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param string $carrierCode
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
+        \Magento\Framework\HTTP\PhpEnvironment\Request $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $carrierCode = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, [
             'server_os'       => PHP_OS,
-            'server_software' => $_SERVER['SERVER_SOFTWARE'],
+            'server_software' => $request->getServerValue('SERVER_SOFTWARE'),
             'php_version'     => PHP_VERSION,
             'carrier_code'    => $carrierCode
         ]);

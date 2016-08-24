@@ -113,7 +113,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             'expression' => $expr,
             'line' => $trace[0]['line']
         ];
-        throw new \Exception($msg);
+        throw new \Magento\Framework\Exception\LocalizedException($msg);
     }
 
     /**
@@ -128,7 +128,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         return implode('<br/>', $msg);
     }
 
-    public function reset()
+    public function initialize()
     {
         $this->debugOutput = [];
         $this->errors = [];
@@ -189,7 +189,6 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         if (!isset($value) || is_bool($value) || is_int($value) || is_string($value)) {
             return var_export($value, true);
         } elseif (is_float($value)) {
-            // return var_export($value, true);
             return (string) $value;
         } elseif (is_array($value)) {
             foreach ($value as $item) {
@@ -229,7 +228,6 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             $result = $this->evaluate($stmt);
-            // echo "<pre>";/*var_export($stmt);*/var_export($result);echo "\n<br/><br/>\n\n";
             if (is_array($result)) {
                 $result = $this->evaluateStmts($result);
             }
@@ -247,7 +245,6 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function closure(\PhpParser\Node\Expr\Closure $expression)
     {
-        // print_r($expression);
         if ($expression->static !== false) {
             return $this->error("Unsupported code - closure \$expression->static !== false", $expression);
         }
@@ -258,7 +255,6 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         $evaluator = $this;
 
         return function () use ($expression, $evaluator) {
-            // echo "--------------\nclosure\n";
             $args = func_get_args();
             $evaluator->registry->createScope();
             try {
@@ -458,15 +454,11 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->error("Unsupported ArrayDimFetch expression", $expr);
             case "PhpParser\\Node\\Expr\\StaticPropertyFetch":
                 $className = $this->evl($expr->class);
-                //if ($className !== 'R') {
                 if (true) { // StaticPropertyFetch is forbidden
                     return $this->error("Unsupported StaticPropertyFetch expression", $expr);
                 }
-                // echo "var: R . {$propertyName}; \n\n" ;
                 $propertyName = $this->evl($expr->name);
                 $result = $this->registry->getGlobal($propertyName);
-                // var_export($this->registry->getKeys());
-                // echo "= " . var_export(is_object($result) ? get_class($result) : $result, true) . "; \n\n" ;
                 return $this->debug($expr, $result);
             case "PhpParser\\Node\\Expr\\PropertyFetch":
                 return $this->evaluatePropertyFetch($expr);
@@ -545,14 +537,6 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                 }
                 return $this->debug($expr, null);
-            /*
-             * case "PhpParser\\Node\\Stmt\\Echo_":
-             * foreach ($expr->exprs as $expr) {
-             * echo $this->evl($expr);
-             * return null;
-             * }
-             * return $this->debug($expr, $expr->parts[0]);
-             */
             case "PhpParser\\Node\\Name":
                 if (!isset($expr->parts) || count($expr->parts) != 1) {
                     return $this->error("Unsupported Name expression", $expr);
@@ -581,10 +565,11 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             return $this->error("Unknown variable \${$expr->var->name} - " . get_class($variable), $expr);
         }
         
-        //$v=$variable;echo "var: ".var_export(is_object($v)?get_class($v):$v,true).".{$propertyName};\n\n";
         if (is_array($variable) && isset($variable[$propertyName])) {
             return $this->debug($expr, $variable[$propertyName]);
-        } elseif (is_object($variable) && $variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper) {
+        } elseif (is_object($variable)
+            && $variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
+        ) {
             return $this->debug($expr, $variable->$propertyName);
         } elseif (is_object($variable) && isset($variable->{$propertyName})) {
             return $this->debug($expr, $variable->{$propertyName});
@@ -638,14 +623,24 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         }
         if (!$method) {
             return $this->error("Unsupported MethodCall expression - Unkown method" . ( is_callable([
-            $variable,
-            $methodName
-        ]) ? '1' : '0'), $expr);
+                $variable,
+                $methodName
+            ]) ? '1' : '0'), $expr);
         }
         $args = $this->evaluateArgs($expr);
-        $result = call_user_func_array($method, $args);
+        $result = $this->callFunction($method, $args);
         $result = $this->wrap($result);
         return $this->debug($expr, $result);
+    }
+
+    /**
+     * @param mixed $method
+     * @param array $args
+     * @return type
+     */
+    protected function callFunction($method, $args = [])
+    {
+        return call_user_func_array($method, $args);
     }
 
     /**
@@ -660,12 +655,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             }
             $functionName = $expr->name->parts[0];
             $map = [
-                'help'             => [ $this, 'fnHelp' ],
+                'help' => [ $this, 'fnHelp' ],
             ];
             $isFunctionAllowed = in_array($functionName, $this->allowedFunctions)
                 || in_array($functionName, array_keys($map));
             if (method_exists($this->callbackManager, $functionName . 'Callback')) {
-                $functionName = array($this->callbackManager, $functionName . 'Callback');
+                $functionName = [ $this->callbackManager, $functionName . 'Callback' ];
             } else {
                 if (!$isFunctionAllowed && function_exists($functionName)) {
                     return $this->error("Unauthorized function '{$functionName}'", $expr);
@@ -677,7 +672,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 }
             }
             $args = $this->evaluateArgs($expr);
-            $result = call_user_func_array($functionName, $args);
+            $result = $this->callFunction($functionName, $args);
             return $this->debug($expr, $result);
         } elseif ($expr->name instanceof \PhpParser\Node\Expr\Variable) {
             $variable = $this->registry->get($expr->name->name);
@@ -687,7 +682,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             if (!is_callable($variable)) {
                 return $this->error("Unsupported FuncCall expression - Variable is not a function", $expr);
             }
-            $result = call_user_func_array($variable, $args = []);
+            $result = $this->callFunction($variable);
             return $this->debug($expr, $result);
         } else {
             return $this->error("Unsupported FuncCall expression", $expr);

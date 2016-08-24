@@ -45,7 +45,7 @@ class Category extends SourceWrapper
 
     /**
      * Load source model
-     * 
+     *
      * @return \Owebia\AdvancedSettingCore\Model\Wrapper\Category
      */
     public function load()

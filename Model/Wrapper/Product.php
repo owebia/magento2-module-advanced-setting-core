@@ -57,7 +57,7 @@ class Product extends SourceWrapper
 
     /**
      * Load source model
-     * 
+     *
      * @return \Owebia\AdvancedSettingCore\Model\Wrapper\Product
      */
     public function load()

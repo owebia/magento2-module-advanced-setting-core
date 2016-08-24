@@ -33,7 +33,7 @@ class ArrayWrapper extends AbstractWrapper implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        throw new \Exception("Wrapper can not be modified");
+        throw new \Magento\Framework\Exception\LocalizedException("Wrapper can not be modified");
     }
 
     /**
@@ -43,7 +43,7 @@ class ArrayWrapper extends AbstractWrapper implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        throw new \Exception("Wrapper can not be modified");
+        throw new \Magento\Framework\Exception\LocalizedException("Wrapper can not be modified");
     }
 
     /**

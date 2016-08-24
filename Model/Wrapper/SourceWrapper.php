@@ -61,7 +61,6 @@ class SourceWrapper extends AbstractWrapper
             return parent::help();
         } else {
             $output = "Help on " . get_class($this) . " : No source defined";
-            // $this->_logger->debugCollapse("Help on " . get_class($this) . " : No source defined", '');
         }
         return $output;
     }

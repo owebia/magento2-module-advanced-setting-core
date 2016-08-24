@@ -15,7 +15,7 @@ class Index extends \Magento\Backend\App\Action
     /**
      * @var \Magento\Framework\Controller\Result\RawFactory
      */
-    protected $resultRawFactory;
+    private $resultRawFactory;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context

@@ -60,7 +60,7 @@ abstract class AbstractWrapper
         $this->registry = $registry;
         $this->logger = $this->objectManager->get('Owebia\AdvancedSettingCore\Logger\Logger');
         $this->data = $data;
-        $this->cache = new \Magento\Framework\DataObject();
+        $this->cache = $objectManager->create('Magento\Framework\DataObject');
     }
 
     protected function isBackendOrder()
@@ -182,16 +182,13 @@ abstract class AbstractWrapper
      */
     public function __get($key)
     {
-        // echo "{$this->_uid}.__get(" . $key . ')';//var_export($this->aliasMap);
         if (isset($this->aliasMap[$key])) {
             return $this->__get($this->aliasMap[$key]);
         }
         if (!$this->cache->hasData($key)) {
-            // echo '!hasData(' . $key . ')';
             $value = $this->wrap($this->loadData($key));
             $this->cache->setData($key, $value);
         }
-        // echo 'getData(' . $key . ')';
         return $this->cache->getData($key);
     }
 }

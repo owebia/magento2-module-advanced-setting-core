@@ -57,8 +57,12 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @param boolean $debug
      * @return array
      */
-    public function parse($configuration, \Owebia\AdvancedSettingCore\Helper\Registry $registry, $callbackManager, $debug = false)
-    {
+    public function parse(
+        $configuration,
+        \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        $callbackManager,
+        $debug = false
+    ) {
         $t0 = microtime(true);
         ini_set('xdebug.max_nesting_level', 3000);
 
@@ -74,14 +78,14 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         }
         
         $this->registry = $registry;
-        $this->evaluator->reset();
+        $this->evaluator->initialize();
         $this->evaluator->setDebug($debug);
         $this->evaluator->setRegistry($registry);
         $this->evaluator->setCallbackManager($callbackManager);
 
         foreach ($stmts as $node) {
             $this->parseNode($node, $callbackManager, $debug);
-            $this->evaluator->reset();
+            $this->evaluator->initialize();
         }
         $t1 = microtime(true);
         if ($debug) {

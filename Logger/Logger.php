@@ -43,7 +43,7 @@ EOD;
     }
 
     /**
-     * 
+     *
      */
     public function collapseClose()
     {
