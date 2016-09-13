@@ -73,9 +73,9 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected $registry = null;
 
     /**
-     * @var object
+     * @var \Owebia\AdvancedSettingCore\Model\CallbackHandler
      */
-    protected $callbackManager = null;
+    protected $callbackHandler = null;
 
     /**
      * @var \PhpParser\PrettyPrinter\Standard
@@ -113,7 +113,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             'expression' => $expr,
             'line' => $trace[0]['line']
         ];
-        throw new \Magento\Framework\Exception\LocalizedException($msg);
+        throw new \Magento\Framework\Exception\LocalizedException(__($msg));
     }
 
     /**
@@ -287,12 +287,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param object $callbackManager
+     * @param \Owebia\AdvancedSettingCore\Model\CallbackHandler $callbackHandler
      * @return \Owebia\AdvancedSettingCore\Helper\Evaluator
      */
-    public function setCallbackManager($callbackManager)
+    public function setCallbackManager(\Owebia\AdvancedSettingCore\Model\CallbackHandler $callbackHandler)
     {
-        $this->callbackManager = $callbackManager;
+        $this->callbackHandler = $callbackHandler;
         return $this;
     }
 
@@ -659,8 +659,8 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             ];
             $isFunctionAllowed = in_array($functionName, $this->allowedFunctions)
                 || in_array($functionName, array_keys($map));
-            if (method_exists($this->callbackManager, $functionName . 'Callback')) {
-                $functionName = [ $this->callbackManager, $functionName . 'Callback' ];
+            if (method_exists($this->callbackHandler, $functionName . 'Callback')) {
+                $functionName = [ $this->callbackHandler, $functionName . 'Callback' ];
             } else {
                 if (!$isFunctionAllowed && function_exists($functionName)) {
                     return $this->error("Unauthorized function '{$functionName}'", $expr);
