@@ -64,6 +64,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         'min',
         'ceil',
         'floor',
+        'range',
         'round',
     ];
 
