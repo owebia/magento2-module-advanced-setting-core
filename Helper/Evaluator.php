@@ -693,7 +693,8 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             if (!is_callable($variable)) {
                 return $this->error("Unsupported FuncCall expression - Variable is not a function", $expr);
             }
-            $result = $this->callFunction($variable);
+            $args = $this->evaluateArgs($expr);
+            $result = $this->callFunction($variable, $args);
             return $this->debug($expr, $result);
         } else {
             return $this->error("Unsupported FuncCall expression", $expr);
