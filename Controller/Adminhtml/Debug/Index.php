@@ -38,7 +38,15 @@ class Index extends \Magento\Backend\App\Action
         $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
         $readInterface = $filesystem->getDirectoryRead(DirectoryList::ROOT);
 
-        $content = $readInterface->readFile('/var/log/owebia_advancedsettingcore.log');
+        $path = '/var/log/owebia_advancedsettingcore.log';
+        if (!$readInterface->isExist($path)) {
+            $content = '';
+        } elseif (!$readInterface->isReadable($path)) {
+            $content = "<p>File MAGENTO_ROOT{$path} is not readable</p>";
+        } else {
+            $content = $readInterface->readFile($path);
+        }
+
         $content = preg_replace('@</pre>[\r\n]*<pre@', '</pre><pre', $content);
         if (!$content || !trim($content)) {
             $content = "<p>The debug log is empty</p>";
