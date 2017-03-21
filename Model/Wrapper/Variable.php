@@ -7,14 +7,19 @@ namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class Variable extends SourceWrapper
 {
-
     /**
      * @return \Magento\Variable\Model\Variable
      */
     protected function loadSource()
     {
-        return $this->objectManager
+        $source = $this->objectManager
             ->create('Magento\Variable\Model\Variable');
+        if (isset($this->data['code'])) {
+            $source->setStoreId($this->getStoreId())
+                ->loadByCode($this->data['code']);
+        }
+
+        return $source;
     }
 
     /**
@@ -23,13 +28,11 @@ class Variable extends SourceWrapper
      */
     protected function loadData($key)
     {
-        $source = $this->getSource();
-        $source->setStoreId($this->getStoreId());
-        $variable = $source->loadByCode($key);
-        if (!$variable) {
-            return null;
+        if (isset($this->data['code'])) {
+            return parent::loadData($key);
         }
-        return $variable;
+
+        return $this->createWrapper([ 'code' => $key ], 'Variable');
     }
 
     /**
@@ -39,9 +42,12 @@ class Variable extends SourceWrapper
     protected function getAdditionalData()
     {
         $data = parent::getAdditionalData();
-        foreach ($this->getSource()->getCollection() as $variable) {
-            $data[$variable->getCode()] = $variable;
+        if (!isset($this->data['code'])) {
+            foreach ($this->getSource()->getCollection() as $variable) {
+                $data[$variable->getCode()] = $variable;
+            }
         }
+
         return $data;
     }
 }
