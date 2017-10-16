@@ -46,7 +46,7 @@ class Customer extends SourceWrapper
                 ->get('Magento\Customer\Model\Session')
                 ->getCustomerId();
         }
-        return $this->customerRepository
+        return !$customerId ? null : $this->customerRepository
             ->getById($customerId);
     }
 }
