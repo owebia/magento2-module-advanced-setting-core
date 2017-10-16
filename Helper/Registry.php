@@ -21,6 +21,13 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     ];
 
     /**
+     * @var array
+     */
+    protected $globalVariables = [
+        [] // Main Scope
+    ];
+
+    /**
      *
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Owebia\AdvancedSettingCore\Model\WrapperFactory $wrapperFactory
@@ -106,11 +113,17 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     public function get($name, $scopeIndex = null)
     {
         if (! isset($scopeIndex)) {
-            $scopeIndex = count($this->data) - 1;
+            $scopeIndex = $this->getCurrentScopeIndex();
         }
+
+        if (isset($this->globalVariables[$scopeIndex][$name])) {
+            $scopeIndex = 0;
+        }
+
         if (isset($this->data[$scopeIndex][$name])) {
             return $this->data[$scopeIndex][$name];
         }
+
         return null;
     }
 
@@ -127,23 +140,55 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $name
      * @param mixed $value
      * @param bool $override
+     * @param int $scopeIndex
      */
-    public function register($name, $value, $override = false)
+    public function register($name, $value, $override = false, $scopeIndex = null)
     {
-        $lastScopeIndex = count($this->data) - 1;
-        if (!$override && isset($this->data[$lastScopeIndex][$name])) {
+        if (! isset($scopeIndex)) {
+            $scopeIndex = $this->getCurrentScopeIndex();
+        }
+
+        if (isset($this->globalVariables[$scopeIndex][$name])) {
+            $scopeIndex = 0;
+        }
+
+        if (!$override && isset($this->data[$scopeIndex][$name])) {
             return;
         }
-        $this->data[$lastScopeIndex][$name] = $value;
+
+        $this->data[$scopeIndex][$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function declareGlobalAtCurrentScope($name)
+    {
+        $scopeIndex = $this->getCurrentScopeIndex();
+        if (!isset($this->globalVariables[$scopeIndex][$name])) {
+            $this->globalVariables[$scopeIndex][$name] = true;
+        }
+    }
+
+    /**
+     * @return int Current scope Index
+     */
+    public function getCurrentScopeIndex()
+    {
+        return count($this->data) - 1;
     }
 
     public function createScope()
     {
-        $this->data[] = [];
+        $scopeIndex = $this->getCurrentScopeIndex() + 1;
+        $this->data[$scopeIndex] = [];
+        $this->globalVariables[$scopeIndex] = [];
     }
 
     public function deleteScope()
     {
-        array_pop($this->data);
+        $scopeIndex = $this->getCurrentScopeIndex();
+        unset($this->data[$scopeIndex]);
+        unset($this->globalVariables[$scopeIndex]);
     }
 }

@@ -498,7 +498,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 foreach ($expr->vars as $var) {
                     $variableName = $var->name;
                     $value = $this->registry->getGlobal($variableName);
-                    $this->registry->register($variableName, $value, true);
+                    $this->registry->declareGlobalAtCurrentScope($variableName);
                 }
                 return $this->debug($expr, null);
             case "PhpParser\\Node\\Expr\\Assign":
