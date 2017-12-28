@@ -53,11 +53,18 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         // Strings
         'explode',
         'implode',
+        'strtolower',
+        'strtoupper',
         'substr',
         'preg_match',
+        'preg_replace',
+        'mb_strtolower',
+        'mb_strtoupper',
+        'mb_substr',
         // Date
         'date',
         'strtotime',
+        'time',
         // Math
         'abs',
         'max',
