@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Helper;
@@ -38,7 +38,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected $counter = 1;
 
     /**
-     * @var \Owebia\AdvancedSettingCore\Helper\Registry
+     * @var array
      */
     protected $allowedFunctions = [
         // Arrays

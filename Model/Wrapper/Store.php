@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -44,7 +44,7 @@ class Store extends SourceWrapper
     }
 
     /**
-     * @return \Magento\Store\Model\Store
+     * @return \Magento\Framework\DataObject|null
      */
     protected function loadSource()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Helper;
@@ -55,7 +55,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param object $callbackManager
      * @param boolean $debug
-     * @return array
+     * @return Config
      */
     public function parse(
         $configuration,

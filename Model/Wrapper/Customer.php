@@ -32,7 +32,7 @@ class Customer extends SourceWrapper
     }
 
     /**
-     * @return \Magento\Customer\Api\Data\CustomerInterface
+     * @return \Magento\Framework\DataObject|null
      */
     protected function loadSource()
     {
