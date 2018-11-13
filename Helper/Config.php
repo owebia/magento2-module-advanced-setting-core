@@ -64,7 +64,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         $debug = false
     ) {
         $t0 = microtime(true);
-        ini_set('xdebug.max_nesting_level', 3000);
+        ini_set('xdebug.max_nesting_level', '3000');
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP5);
         
