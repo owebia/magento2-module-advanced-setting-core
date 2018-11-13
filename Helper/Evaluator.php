@@ -580,7 +580,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             $variable = $this->evl($variable);
         }
         if (!isset($variable) && isset($expr->var->name) && is_string($expr->var->name)) {
-            return $this->error("Unknown variable \${$expr->var->name} - " . get_class($variable), $expr);
+            return $this->error("Unknown variable \${$expr->var->name}", $expr);
         }
         
         if (is_array($variable) && isset($variable[$propertyName])) {
