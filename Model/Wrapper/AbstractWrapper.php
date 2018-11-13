@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -58,9 +58,9 @@ abstract class AbstractWrapper
         $this->objectManager = $objectManager;
         $this->backendAuthSession = $backendAuthSession;
         $this->registry = $registry;
-        $this->logger = $this->objectManager->get('Owebia\AdvancedSettingCore\Logger\Logger');
+        $this->logger = $this->objectManager->get(\Owebia\AdvancedSettingCore\Logger\Logger::class);
         $this->data = $data;
-        $this->cache = $objectManager->create('Magento\Framework\DataObject');
+        $this->cache = $objectManager->create(\Magento\Framework\DataObject::class);
     }
 
     protected function isBackendOrder()

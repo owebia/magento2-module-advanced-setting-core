@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Owebia. All rights reserved.
+ * Copyright © 2015-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -35,7 +35,7 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         /** @var Filesystem $filesystem */
-        $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
+        $filesystem = $this->_objectManager->get(Filesystem::class);
         $readInterface = $filesystem->getDirectoryRead(DirectoryList::ROOT);
 
         $path = '/var/log/owebia_advancedsettingcore.log';

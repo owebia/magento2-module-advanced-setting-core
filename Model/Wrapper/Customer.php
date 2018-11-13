@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -38,14 +38,15 @@ class Customer extends SourceWrapper
     {
         if ($this->isBackendOrder()) { // For backend orders
             $customerId = $this->objectManager
-                ->get('Magento\Backend\Model\Session\Quote')
+                ->get(\Magento\Backend\Model\Session\Quote::class)
                 ->getQuote()
                 ->getCustomerId();
         } else {
             $customerId = $this->objectManager
-                ->get('Magento\Customer\Model\Session')
+                ->get(\Magento\Customer\Model\Session::class)
                 ->getCustomerId();
         }
+
         return !$customerId ? null : $this->customerRepository
             ->getById($customerId);
     }

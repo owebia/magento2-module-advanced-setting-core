@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -18,7 +18,7 @@ class Clear extends \Magento\Backend\App\Action
     public function execute()
     {
         /** @var Filesystem $filesystem */
-        $filesystem = $this->_objectManager->get('Magento\Framework\Filesystem');
+        $filesystem = $this->_objectManager->get(Filesystem::class);
         $writeInterface = $filesystem->getDirectoryWrite(DirectoryList::LOG);
 
         $writeInterface->writeFile('owebia_advancedsettingcore.log', '');
