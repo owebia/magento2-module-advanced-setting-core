@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model;
@@ -42,5 +42,13 @@ class CallbackHandler
     public function setRegistry($registry)
     {
         $this->registry = $registry;
+    }
+
+    /**
+     * @return \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     */
+    public function getRegistry()
+    {
+        return $this->registry;
     }
 }
