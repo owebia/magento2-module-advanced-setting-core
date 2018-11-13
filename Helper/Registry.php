@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2017 Owebia. All rights reserved.
+ * Copyright © 2016-2018 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Helper;
@@ -48,14 +48,14 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         $this->data = [
             []
         ];
+        $this->register('request', $this->create('SourceWrapper', [
+            'data' => $request,
+        ]));
         $this->register('quote', $this->create('Quote'));
         $this->register('customer', $this->create('Customer'));
         $this->register('customer_group', $this->create('CustomerGroup'));
         $this->register('variable', $this->create('Variable'));
         $this->register('store', $this->create('Store'));
-        $this->register('request', $this->create('SourceWrapper', [
-            'data' => $request,
-        ]));
         return $this;
     }
 
