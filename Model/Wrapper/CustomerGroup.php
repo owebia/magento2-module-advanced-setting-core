@@ -36,7 +36,11 @@ class CustomerGroup extends SourceWrapper
      */
     protected function loadSource()
     {
-        if ($this->isBackendOrder()) { // For backend orders
+        $quoteWrapper = $this->registry->get('quote');
+        if (isset($quoteWrapper) && $quoteWrapper->getSource() instanceof \Magento\Quote\Model\Quote) {
+            $quote = $quoteWrapper->getSource();
+            $customerGroupId = $quote->getCustomerGroupId();
+        } elseif ($this->isBackendOrder()) { // For backend orders
             $customerGroupId = $this->objectManager
                 ->get(\Magento\Backend\Model\Session\Quote::class)
                 ->getQuote()

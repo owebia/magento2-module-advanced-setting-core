@@ -12,6 +12,17 @@ class Quote extends SourceWrapper
      */
     protected function loadSource()
     {
+        // Get quote from \Magento\Quote\Model\Quote\Address\RateRequest if possible
+        $requestWrapper = $this->registry->get('request');
+        if (isset($requestWrapper) && $requestWrapper->getSource() instanceof \Magento\Quote\Model\Quote\Address\RateRequest) {
+            $request = $requestWrapper->getSource();
+            foreach ($request->getAllItems() as $item) {
+                if ($quote = $item->getQuote()) {
+                    return $quote;
+                }
+            }
+        }
+
         if ($this->isBackendOrder()) { // For backend orders
             $session = $this->objectManager
                 ->get(\Magento\Backend\Model\Session\Quote::class);

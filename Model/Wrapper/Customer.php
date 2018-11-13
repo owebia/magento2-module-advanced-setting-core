@@ -36,6 +36,14 @@ class Customer extends SourceWrapper
      */
     protected function loadSource()
     {
+        $quoteWrapper = $this->registry->get('quote');
+        if (isset($quoteWrapper) && $quoteWrapper->getSource() instanceof \Magento\Quote\Model\Quote) {
+            $quote = $quoteWrapper->getSource();
+            if ($customer = $quote->getCustomer()) {
+                return $customer;
+            }
+        }
+
         if ($this->isBackendOrder()) { // For backend orders
             $customerId = $this->objectManager
                 ->get(\Magento\Backend\Model\Session\Quote::class)
