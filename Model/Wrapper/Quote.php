@@ -16,9 +16,12 @@ class Quote extends SourceWrapper
         $requestWrapper = $this->registry->get('request');
         if (isset($requestWrapper) && $requestWrapper->getSource() instanceof \Magento\Quote\Model\Quote\Address\RateRequest) {
             $request = $requestWrapper->getSource();
-            foreach ($request->getAllItems() as $item) {
-                if ($quote = $item->getQuote()) {
-                    return $quote;
+            $requestItems = $request->getAllItems();
+            if ($requestItems) {
+                foreach ($requestItems as $item) {
+                    if ($quote = $item->getQuote()) {
+                        return $quote;
+                    }
                 }
             }
         }
