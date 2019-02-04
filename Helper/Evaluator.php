@@ -671,6 +671,15 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @param mixed $args,...
+     * @return string
+     */
+    protected function translateCallback(...$args)
+    {
+        return (string) call_user_func_array('__', $args);
+    }
+
+    /**
      * @param type $expr
      * @return type
      */
@@ -680,9 +689,11 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             if (count($expr->name->parts) != 1) {
                 return $this->error("Unsupported FuncCall expression", $expr);
             }
+
             $functionName = $expr->name->parts[0];
             $map = [
                 'help' => [ $this, 'fnHelp' ],
+                '__' => [ $this, 'translateCallback' ],
             ];
             $isFunctionAllowed = in_array($functionName, $this->allowedFunctions)
                 || in_array($functionName, array_keys($map));
@@ -694,10 +705,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 } elseif (!$isFunctionAllowed) {
                     return $this->error("Unknown function '{$functionName}'", $expr);
                 }
+
                 if (isset($map[$functionName])) {
                     $functionName = $map[$functionName];
                 }
             }
+
             $args = $this->evaluateArgs($expr);
             $result = $this->callFunction($functionName, $args);
             return $this->debug($expr, $result);
@@ -706,9 +719,11 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             if (!isset($variable)) {
                 return $this->error("Unsupported FuncCall expression - Unkown function", $expr);
             }
+
             if (!is_callable($variable)) {
                 return $this->error("Unsupported FuncCall expression - Variable is not a function", $expr);
             }
+
             $args = $this->evaluateArgs($expr);
             $result = $this->callFunction($variable, $args);
             return $this->debug($expr, $result);
