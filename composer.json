@@ -15,7 +15,7 @@
         "magento/module-store": "^100.0|^101.0",
         "magento/module-variable": "^100.0",
         "magento/magento-composer-installer": "^0.1.13",
-        "nikic/php-parser": "3.1.*"
+        "nikic/php-parser": "^3.1.0|^4.0.0"
     },
     "type": "magento2-module",
     "license": [

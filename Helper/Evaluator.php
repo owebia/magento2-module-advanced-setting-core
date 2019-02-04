@@ -5,6 +5,8 @@
  */
 namespace Owebia\AdvancedSettingCore\Helper;
 
+use PhpParser\Node;
+
 /**
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -207,7 +209,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             // return $this->getPrettyPrinter()->pExpr_Array(new \PhpParser\Node\Expr\Array_($value));
             return var_export($value, true);
         } elseif (is_object($value)) {
-            if ($value instanceof \PhpParser\Node) {
+            if ($value instanceof Node) {
                 if ($value->hasAttribute('comments')) {
                     $value->setAttribute('comments', []);
                 }
@@ -231,7 +233,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     public function evaluateStmts($stmts)
     {
         foreach ($stmts as $stmt) {
-            if ($stmt instanceof \PhpParser\Node\Stmt\Return_) {
+            if ($stmt instanceof Node\Stmt\Return_) {
                 return $stmt;
             }
 
@@ -239,7 +241,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             if (is_array($result) && $this->doesArrayContainOnly($result, \PhpParse\AbstractNode::class)) {
                 $result = $this->evaluateStmts($result);
             }
-            if ($result instanceof \PhpParser\Node\Stmt\Return_) {
+            if ($result instanceof Node\Stmt\Return_) {
                 return $result;
             }
         }
@@ -261,7 +263,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @return \Closure|null
      * @throws \Exception
      */
-    protected function closure(\PhpParser\Node\Expr\Closure $expression)
+    protected function closure(Node\Expr\Closure $expression)
     {
         if ($expression->static !== false) {
             return $this->error("Unsupported code - closure \$expression->static !== false", $expression);
@@ -278,11 +280,11 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             try {
                 foreach ($expression->params as $param) {
                     $value = empty($args) ? $evaluator->evaluate($param) : array_shift($args);
-                    $evaluator->registry->register($param->name, $this->wrap($value));
+                    $evaluator->registry->register(isset($param->var->name) ? $param->var->name : $param->name, $this->wrap($value)); // v.3 $param->name, v.4 $param->var->name
                 }
                 
                 $result = $evaluator->evaluateStmts($expression->stmts);
-                if ($result instanceof \PhpParser\Node\Stmt\Return_) {
+                if ($result instanceof Node\Stmt\Return_) {
                     $result = $evaluator->evaluate($result);
                 }
             } catch (\Exception $e) {
@@ -340,92 +342,99 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         
         $className = get_class($expr);
         switch ($className) {
-            case "PhpParser\\Node\\Scalar\\DNumber":
-            case "PhpParser\\Node\\Scalar\\LNumber":
-            case "PhpParser\\Node\\Scalar\\String_":
+            // nikic/php-parser:4.*
+            // Don't use ::class to keep compatibility with nikic/php-parser:3.*
+            case 'PhpParser\\Node\\Stmt\\Expression':
+                return $this->debug($expr, $this->evl($expr->expr));
+            case 'PhpParser\\Node\\Identifier':
+                return $this->debug($expr, (string) $expr);
+
+            case Node\Scalar\DNumber::class:
+            case Node\Scalar\LNumber::class:
+            case Node\Scalar\String_::class:
                 return $this->debug($expr, $expr->value);
             
             // Arithmetic Operators
-            case "PhpParser\\Node\\Expr\\UnaryMinus":
+            case Node\Expr\UnaryMinus::class:
                 return $this->debug($expr, - $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Plus":
+            case Node\Expr\BinaryOp\Plus::class:
                 return $this->debug($expr, $this->evl($expr->left) + $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Minus":
+            case Node\Expr\BinaryOp\Minus::class:
                 return $this->debug($expr, $this->evl($expr->left) - $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Mul":
+            case Node\Expr\BinaryOp\Mul::class:
                 return $this->debug($expr, $this->evl($expr->left) * $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Div":
+            case Node\Expr\BinaryOp\Div::class:
                 return $this->debug($expr, $this->evl($expr->left) / $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Mod":
+            case Node\Expr\BinaryOp\Mod::class:
                 return $this->debug($expr, $this->evl($expr->left) % $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Pow": // Operator ** Introduced in PHP 5.6
+            case Node\Expr\BinaryOp\Pow::class: // Operator ** Introduced in PHP 5.6
                 return $this->debug($expr, pow($this->evl($expr->left), $this->evl($expr->right)));
             
             // Bitwise Operators
-            case "PhpParser\\Node\\Expr\\BinaryOp\\BitwiseAnd":
+            case Node\Expr\BinaryOp\BitwiseAnd::class:
                 return $this->debug($expr, $this->evl($expr->left) & $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\BitwiseOr":
+            case Node\Expr\BinaryOp\BitwiseOr::class:
                 return $this->debug($expr, $this->evl($expr->left) | $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\BitwiseXor":
+            case Node\Expr\BinaryOp\BitwiseXor::class:
                 return $this->debug($expr, $this->evl($expr->left) ^ $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BitwiseNot":
+            case Node\Expr\BitwiseNot::class:
                 return $this->debug($expr, ~ $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\ShiftLeft":
+            case Node\Expr\BinaryOp\ShiftLeft::class:
                 return $this->debug($expr, $this->evl($expr->left) << $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\ShiftRight":
+            case Node\Expr\BinaryOp\ShiftRight::class:
                 return $this->debug($expr, $this->evl($expr->left) >> $this->evl($expr->right));
             
             // Comparison Operators
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Equal":
+            case Node\Expr\BinaryOp\Equal::class:
                 return $this->debug($expr, $this->evl($expr->left) == $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Identical":
+            case Node\Expr\BinaryOp\Identical::class:
                 return $this->debug($expr, $this->evl($expr->left) === $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\NotEqual":
+            case Node\Expr\BinaryOp\NotEqual::class:
                 return $this->debug($expr, $this->evl($expr->left) != $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\NotIdentical":
+            case Node\Expr\BinaryOp\NotIdentical::class:
                 return $this->debug($expr, $this->evl($expr->left) !== $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Smaller":
+            case Node\Expr\BinaryOp\Smaller::class:
                 return $this->debug($expr, $this->evl($expr->left) < $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Greater":
+            case Node\Expr\BinaryOp\Greater::class:
                 return $this->debug($expr, $this->evl($expr->left) > $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\SmallerOrEqual":
+            case Node\Expr\BinaryOp\SmallerOrEqual::class:
                 return $this->debug($expr, $this->evl($expr->left) <= $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\GreaterOrEqual":
+            case Node\Expr\BinaryOp\GreaterOrEqual::class:
                 return $this->debug($expr, $this->evl($expr->left) >= $this->evl($expr->right));
             
             // Logical Operators
-            case "PhpParser\\Node\\Expr\\BinaryOp\\LogicalAnd":
+            case Node\Expr\BinaryOp\LogicalAnd::class:
                 return $this->debug($expr, $this->evl($expr->left) and $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\LogicalOr":
+            case Node\Expr\BinaryOp\LogicalOr::class:
                 return $this->debug($expr, $this->evl($expr->left) or $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\LogicalXor":
+            case Node\Expr\BinaryOp\LogicalXor::class:
                 return $this->debug($expr, $this->evl($expr->left) xor $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BooleanNot":
+            case Node\Expr\BooleanNot::class:
                 return $this->debug($expr, !$this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\BooleanAnd":
+            case Node\Expr\BinaryOp\BooleanAnd::class:
                 return $this->debug($expr, $this->evl($expr->left) && $this->evl($expr->right));
-            case "PhpParser\\Node\\Expr\\BinaryOp\\BooleanOr":
+            case Node\Expr\BinaryOp\BooleanOr::class:
                 return $this->debug($expr, $this->evl($expr->left) || $this->evl($expr->right));
             
             // Casting
-            case "PhpParser\\Node\\Expr\\Cast\\String_":
+            case Node\Expr\Cast\String_::class:
                 return $this->debug($expr, (string) $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\Cast\\Int_":
+            case Node\Expr\Cast\Int_::class:
                 return $this->debug($expr, (int) $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\Cast\\Bool_":
+            case Node\Expr\Cast\Bool_::class:
                 return $this->debug($expr, (bool) $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\Cast\\Double":
+            case Node\Expr\Cast\Double::class:
                 return $this->debug($expr, (double) $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\Cast\\Object_":
+            case Node\Expr\Cast\Object_::class:
                 return $this->debug($expr, (object) $this->evl($expr->expr));
-            case "PhpParser\\Node\\Expr\\Cast\\Array_":
+            case Node\Expr\Cast\Array_::class:
                 return $this->debug($expr, (array) $this->evl($expr->expr));
             
             // String Operators
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Concat":
+            case Node\Expr\BinaryOp\Concat::class:
                 return $this->debug($expr, $this->evl($expr->left) . $this->evl($expr->right));
             
-            case "PhpParser\\Node\\Expr\\BinaryOp\\Coalesce": // Operator ?? Introduced in PHP 7
+            case Node\Expr\BinaryOp\Coalesce::class: // Operator ?? Introduced in PHP 7
                 try {
                     $left = $this->evl($expr->left);
                 } catch (\OutOfBoundsException $e) {
@@ -433,12 +442,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 return $this->debug($expr, null !== $left ? $left : $this->evl($expr->right));
             
-            case "PhpParser\\Node\\Expr\\Ternary":
+            case Node\Expr\Ternary::class:
                 return $this->debug($expr, $this->evl($expr->cond)
                     ? $this->evl($expr->if)
                     : $this->evl($expr->else));
             
-            case "PhpParser\\Node\\Expr\\Isset_":
+            case Node\Expr\Isset_::class:
                 try {
                     $result = $this->evl($expr->vars[0]);
                 } catch (\OutOfBoundsException $e) {
@@ -446,16 +455,16 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 return $this->debug($expr, $result  !== null);
 
-            case "PhpParser\\Node\\Expr\\MethodCall":
+            case Node\Expr\MethodCall::class:
                 return $this->evaluateMethodCall($expr);
 
-            case "PhpParser\\Node\\Expr\\ArrayDimFetch":
+            case Node\Expr\ArrayDimFetch::class:
                 $propertyName = $this->evl($expr->dim);
                 $variable = $this->evl($expr->var);
-                if ($variable instanceof \PhpParser\Node\Expr\ArrayItem) {
+                if ($variable instanceof Node\Expr\ArrayItem) {
                     $variable = $this->evl($variable->value);
                 }
-                if ($variable instanceof \PhpParser\Node\Expr\Array_) {
+                if ($variable instanceof Node\Expr\Array_) {
                     $variable = $this->evl($variable);
                 }
                 // var_export($variable);
@@ -470,7 +479,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                     throw new \OutOfBoundsException("Undefined index: $propertyName", $this::UNDEFINED_INDEX);
                 }
                 return $this->error("Unsupported ArrayDimFetch expression", $expr);
-            case "PhpParser\\Node\\Expr\\StaticPropertyFetch":
+            case Node\Expr\StaticPropertyFetch::class:
                 $className = $this->evl($expr->class);
                 if (true) { // StaticPropertyFetch is forbidden
                     return $this->error("Unsupported StaticPropertyFetch expression", $expr);
@@ -478,11 +487,11 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 $propertyName = $this->evl($expr->name);
                 $result = $this->registry->getGlobal($propertyName);
                 return $this->debug($expr, $result);
-            case "PhpParser\\Node\\Expr\\PropertyFetch":
+            case Node\Expr\PropertyFetch::class:
                 return $this->evaluatePropertyFetch($expr);
-            case "PhpParser\\Node\\Expr\\Variable":
+            case Node\Expr\Variable::class:
                 return $this->debug($expr, $this->registry->get($expr->name));
-            case "PhpParser\\Node\\Expr\\Array_":
+            case Node\Expr\Array_::class:
                 $items = [];
                 foreach ($expr->items as $item) {
                     $value = $this->evl($item->value);
@@ -493,25 +502,25 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                 }
                 return $this->debug($expr, $items);
-            case "PhpParser\\Node\\Expr\\ConstFetch":
+            case Node\Expr\ConstFetch::class:
                 return $this->debug($expr, constant($expr->name->parts[0]));
-            case "PhpParser\\Node\\Expr\\FuncCall":
+            case Node\Expr\FuncCall::class:
                 return $this->evaluateFuncCall($expr);
-            case "PhpParser\\Node\\Expr\\Closure":
+            case Node\Expr\Closure::class:
                 return $this->debug($expr, $this->closure($expr));
-            case "PhpParser\\Node\\Stmt\\Return_":
+            case Node\Stmt\Return_::class:
                 return $this->debug($expr, $this->evl($expr->expr));
-            case "PhpParser\\Node\\Stmt\\Global_":
+            case Node\Stmt\Global_::class:
                 foreach ($expr->vars as $var) {
                     $variableName = $var->name;
                     $value = $this->registry->getGlobal($variableName);
                     $this->registry->declareGlobalAtCurrentScope($variableName);
                 }
                 return $this->debug($expr, null);
-            case "PhpParser\\Node\\Expr\\Assign":
+            case Node\Expr\Assign::class:
                 if (!isset($expr->var->name)
                     || !isset($expr->expr)
-                    || !($expr->var instanceof \PhpParser\Node\Expr\Variable)
+                    || !($expr->var instanceof Node\Expr\Variable)
                 ) {
                     return $this->error("Unsupported Assign expression", $expr);
                 }
@@ -519,7 +528,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 $value = $this->evl($expr->expr);
                 $this->registry->register($variableName, $value, true);
                 return $this->debug($expr, $value);
-            case "PhpParser\\Node\\Stmt\\If_":
+            case Node\Stmt\If_::class:
                 $cond = $this->evl($expr->cond);
                 if ($cond) {
                     return $this->debug($expr, $this->evaluateStmts($expr->stmts), $wrap = false);
@@ -537,7 +546,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                     return $this->debug($expr, $this->evaluateStmts($expr->else->stmts), $wrap = false);
                 }
                 return $this->debug($expr, null);
-            case "PhpParser\\Node\\Stmt\\Foreach_":
+            case Node\Stmt\Foreach_::class:
                 $exp = $this->evl($expr->expr);
                 $valueVar = $this->evl($expr->valueVar->name);
                 $keyVar = $expr->keyVar ? $this->evl($expr->keyVar->name) : null;
@@ -550,12 +559,12 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                         $this->registry->register($keyVar, $this->wrap($key), true);
                     }
                     $result = $this->evaluateStmts($expr->stmts);
-                    if ($result instanceof \PhpParser\Node\Stmt\Return_) {
+                    if ($result instanceof Node\Stmt\Return_) {
                         return $this->debug($expr, $result);
                     }
                 }
                 return $this->debug($expr, null);
-            case "PhpParser\\Node\\Name":
+            case Node\Name::class:
                 if (!isset($expr->parts) || count($expr->parts) != 1) {
                     return $this->error("Unsupported Name expression", $expr);
                 }
@@ -573,10 +582,10 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $propertyName = $this->evl($expr->name);
         $variable = $this->evl($expr->var);
-        if ($variable instanceof \PhpParser\Node\Expr\ArrayItem) {
+        if ($variable instanceof Node\Expr\ArrayItem) {
             $variable = $this->evl($variable->value);
         }
-        if ($variable instanceof \PhpParser\Node\Expr\Array_) {
+        if ($variable instanceof Node\Expr\Array_) {
             $variable = $this->evl($variable);
         }
         if (!isset($variable) && isset($expr->var->name) && is_string($expr->var->name)) {
@@ -605,10 +614,10 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $methodName = $this->evl($expr->name);
         $variable = $this->evl($expr->var);
-        if ($variable instanceof \PhpParser\Node\Expr\ArrayItem) {
+        if ($variable instanceof Node\Expr\ArrayItem) {
             $variable = $this->evl($variable->value);
         }
-        if ($variable instanceof \PhpParser\Node\Expr\Array_) {
+        if ($variable instanceof Node\Expr\Array_) {
             $variable = $this->evl($variable);
         }
 
@@ -692,7 +701,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             $args = $this->evaluateArgs($expr);
             $result = $this->callFunction($functionName, $args);
             return $this->debug($expr, $result);
-        } elseif ($expr->name instanceof \PhpParser\Node\Expr\Variable) {
+        } elseif ($expr->name instanceof Node\Expr\Variable) {
             $variable = $this->registry->get($expr->name->name);
             if (!isset($variable)) {
                 return $this->error("Unsupported FuncCall expression - Unkown function", $expr);
