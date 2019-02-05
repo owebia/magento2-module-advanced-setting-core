@@ -50,6 +50,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         $this->data = [
             []
         ];
+        $this->register('app',              $this->create(Wrapper\App::class));
         $this->register('request',          $this->create(Wrapper\SourceWrapper::class, [
             'data' => $request,
         ]));
