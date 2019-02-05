@@ -646,7 +646,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 $variable,
                 $methodName
             ];
-        } elseif ($variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper && is_callable([
+        } elseif ($variable instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\SourceWrapper && is_callable([
             $variable->getSource(),
             $methodName
         ])) {
