@@ -43,38 +43,47 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @var array
      */
     protected $allowedFunctions = [
-        // Arrays
-        'in_array',
-        'count',
-        'array_filter',
-        'array_intersect',
-        'array_map',
-        'array_reduce',
-        'array_sum',
-        'array_unique',
-        // Strings
+        // Math Functions
+        'abs',
+        'ceil',
+        'floor',
+        'max',
+        'min',
+        'round',
+        // String Functions
         'explode',
         'implode',
+        'strlen',
+        'strpos',
         'strtolower',
         'strtoupper',
         'substr',
-        'preg_match',
-        'preg_replace',
+        // Multibyte String Functions
+        'mb_strlen',
+        'mb_strpos',
         'mb_strtolower',
         'mb_strtoupper',
         'mb_substr',
-        // Date
+        // PCRE Functions
+        'preg_match',
+        'preg_replace',
+        // Date/Time Functions
         'date',
         'strtotime',
         'time',
-        // Math
-        'abs',
-        'max',
-        'min',
-        'ceil',
-        'floor',
+        // Array Functions
+        'array_filter',
+        'array_intersect',
+        'array_keys',
+        'array_map',
+        'array_reduce',
+        'array_search',
+        'array_sum',
+        'array_unique',
+        'array_values',
+        'count',
+        'in_array',
         'range',
-        'round',
     ];
 
     /**
