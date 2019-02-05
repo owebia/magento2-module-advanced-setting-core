@@ -13,7 +13,7 @@ class Variable extends SourceWrapper
     protected function loadSource()
     {
         $source = $this->objectManager
-            ->create('Magento\Variable\Model\Variable');
+            ->create(\Magento\Variable\Model\Variable::class);
         if (isset($this->data['code'])) {
             $source->setStoreId($this->getStoreId())
                 ->loadByCode($this->data['code']);

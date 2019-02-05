@@ -1,9 +1,11 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Helper;
+
+use Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class Registry extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -48,30 +50,27 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         $this->data = [
             []
         ];
-        $this->register('request', $this->create('SourceWrapper', [
+        $this->register('request',          $this->create(Wrapper\SourceWrapper::class, [
             'data' => $request,
         ]));
-        $this->register('quote', $this->create('Quote'));
-        $this->register('customer', $this->create('Customer'));
-        $this->register('customer_group', $this->create('CustomerGroup'));
-        $this->register('variable', $this->create('Variable'));
-        $this->register('store', $this->create('Store'));
+        $this->register('quote',            $this->create(Wrapper\Quote::class));
+        $this->register('customer',         $this->create(Wrapper\Customer::class));
+        $this->register('customer_group',   $this->create(Wrapper\CustomerGroup::class));
+        $this->register('variable',         $this->create(Wrapper\Variable::class));
+        $this->register('store',            $this->create(Wrapper\Store::class));
         return $this;
     }
 
     /**
      * @param string $className
      * @param array $arguments
-     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
+     * @return Wrapper\AbstractWrapper
      */
     public function create($className, array $arguments = [])
     {
         $args = array_merge([
             'registry' => $this,
         ], $arguments);
-        if (strpos($className, "\\") === false) {
-            $className = "Owebia\\AdvancedSettingCore\\Model\\Wrapper\\$className";
-        }
         return $this->wrapperFactory->create($className, $args);
     }
 
@@ -87,18 +86,18 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         } elseif ($type == 'array') {
             return $data;
         } elseif ($type == 'object') {
-            if ($data instanceof \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper) {
+            if ($data instanceof Wrapper\AbstractWrapper) {
                 return $data;
             } elseif ($data instanceof \Closure) {
                 return $data;
             } elseif ($data instanceof \Magento\Quote\Model\Quote\Item) {
-                return $this->create('QuoteItem', [ 'data' => $data ]);
+                return $this->create(Wrapper\QuoteItem::class, [ 'data' => $data ]);
             } elseif ($data instanceof \Magento\Catalog\Api\Data\ProductInterface) {
-                return $this->create('Product', [ 'data' => $data ]);
+                return $this->create(Wrapper\Product::class, [ 'data' => $data ]);
             } elseif ($data instanceof \Magento\Catalog\Api\Data\CategoryInterface) {
-                return $this->create('Category', [ 'data' => $data ]);
+                return $this->create(Wrapper\Category::class, [ 'data' => $data ]);
             } else {
-                return $this->create('SourceWrapper', [ 'data' => $data ]);
+                return $this->create(Wrapper\SourceWrapper::class, [ 'data' => $data ]);
             }
         } else {
             throw new \Magento\Framework\Exception\LocalizedException(__("Unsupported type %s", $type));
