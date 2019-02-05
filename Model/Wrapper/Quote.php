@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -16,9 +16,11 @@ class Quote extends SourceWrapper
         $requestWrapper = $this->registry->get('request');
         if (isset($requestWrapper) && $requestWrapper->getSource() instanceof \Magento\Quote\Model\Quote\Address\RateRequest) {
             $request = $requestWrapper->getSource();
-            foreach ($request->getAllItems() as $item) {
-                if ($quote = $item->getQuote()) {
-                    return $quote;
+            if ($items = $request->getAllItems()) {
+                foreach ($items as $item) {
+                    if ($quote = $item->getQuote()) {
+                        return $quote;
+                    }
                 }
             }
         }
