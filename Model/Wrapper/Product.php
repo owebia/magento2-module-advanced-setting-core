@@ -1,9 +1,11 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
+
+use Owebia\AdvancedSettingCore\Model\Wrapper;
 
 class Product extends SourceWrapper
 {
@@ -58,7 +60,7 @@ class Product extends SourceWrapper
     /**
      * Load source model
      *
-     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\Product
+     * @return Wrapper\Product
      */
     public function load()
     {
@@ -94,15 +96,21 @@ class Product extends SourceWrapper
 
     /**
      * {@inheritDoc}
-     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
+     * @see Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {
         switch ($key) {
             case 'attribute_set':
-                return $this->createWrapper([ 'id' => (int) $this->{'attribute_set_id'} ], 'ProductAttributeSet');
+                return $this->createWrapper(
+                    [ 'id' => (int) $this->{'attribute_set_id'} ],
+                    Wrapper\ProductAttributeSet::class
+                );
             case 'stock_item':
-                return $this->createWrapper([ 'product_id' => (int) $this->{'entity_id'} ], 'ProductStockItem');
+                return $this->createWrapper(
+                    [ 'product_id' => (int) $this->{'entity_id'} ],
+                    Wrapper\ProductStockItem::class
+                );
             case 'category_id':
                 /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
                 $product = $this->getSource();

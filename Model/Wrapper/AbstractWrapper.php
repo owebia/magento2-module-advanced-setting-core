@@ -5,6 +5,8 @@
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
 
+use Owebia\AdvancedSettingCore\Model\Wrapper;
+
 abstract class AbstractWrapper
 {
 
@@ -113,11 +115,11 @@ abstract class AbstractWrapper
     /**
      * @param mixed $data
      * @param string $className
-     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
+     * @return Wrapper\AbstractWrapper
      */
-    protected function createWrapper($data, $className = 'SourceWrapper')
+    protected function createWrapper($data, $className = null)
     {
-        return $this->registry->create($className, [ 'data' => $data ]);
+        return $this->registry->create($className ?? Wrapper\SourceWrapper::class, [ 'data' => $data ]);
     }
 
     /**

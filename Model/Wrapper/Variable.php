@@ -32,7 +32,10 @@ class Variable extends SourceWrapper
             return parent::loadData($key);
         }
 
-        return $this->createWrapper([ 'code' => $key ], 'Variable');
+        return $this->createWrapper(
+            [ 'code' => $key ],
+            static::class
+        );
     }
 
     /**
