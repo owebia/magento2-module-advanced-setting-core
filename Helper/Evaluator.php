@@ -683,8 +683,9 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @param mixed $args,...
      * @return string
      */
-    protected function translateCallback(...$args)
+    protected function translateCallback(/* ...$args */)
     {
+        $args = func_get_args();
         return (string) call_user_func_array('__', $args);
     }
 

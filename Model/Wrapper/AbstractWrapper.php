@@ -119,7 +119,7 @@ abstract class AbstractWrapper
      */
     protected function createWrapper($data, $className = null)
     {
-        return $this->registry->create($className ?? Wrapper\SourceWrapper::class, [ 'data' => $data ]);
+        return $this->registry->create($className ? $className : Wrapper\SourceWrapper::class, [ 'data' => $data ]);
     }
 
     /**
