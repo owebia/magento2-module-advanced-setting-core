@@ -179,18 +179,28 @@ abstract class AbstractWrapper
     }
 
     /**
-     * @param string $key
+     * @param string $name
      * @return mixed
      */
-    public function __get($key)
+    public function __get($name)
     {
-        if (isset($this->aliasMap[$key])) {
-            return $this->__get($this->aliasMap[$key]);
+        if (isset($this->aliasMap[$name])) {
+            return $this->__get($this->aliasMap[$name]);
         }
-        if (!$this->cache->hasData($key)) {
-            $value = $this->wrap($this->loadData($key));
-            $this->cache->setData($key, $value);
+        if (!$this->cache->hasData($name)) {
+            $value = $this->wrap($this->loadData($name));
+            $this->cache->setData($name, $value);
         }
-        return $this->cache->getData($key);
+        return $this->cache->getData($name);
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $value = $this->__get($name);
+        return $value !== null;
     }
 }
