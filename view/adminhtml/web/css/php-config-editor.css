@@ -1,0 +1,36 @@
+/**
+ * Copyright © 2019 Owebia. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+.phpConfigEditor.pceFullscreen{position:fixed;top:0;left:0;right:0;bottom:0;z-index:800;background:#fff;padding:2rem}
+.phpConfigEditor.pceFullscreen .pceFullscreenOnly .pceToolbar{text-align:right}
+.phpConfigEditor textarea{background:#eee;color:Teal;font-family:monospace;overflow:auto;white-space:pre;height:400px;
+    tab-size:4;display:none}
+.phpConfigEditor.pceFullscreen textarea{display:block;position:absolute;width:100%;height:100%;resize:none;border:0;background:#1d1f21;
+    color:#c5c8c6;font:12px/normal 'Monaco','Menlo','Ubuntu Mono','Consolas','source-code-pro',monospace}
+.phpConfigEditor.pceFullscreen .pceFieldContainer{display:block;position:absolute;top:2rem;left:0;right:0;bottom:0}
+.phpConfigEditor.pceFullscreen .pceFullscreenHidden{display:none}
+.phpConfigEditor.pceFullscreen .pceHead{padding-bottom:1rem}
+.phpConfigEditor.pceFullscreen .pceStatus{position:absolute;right:10px;top:4.3rem;font-size:.8em}
+.phpConfigEditor .pceFullscreenOnly{display:none}
+.phpConfigEditor .icon span{display:none}
+.phpConfigEditor a.icon{text-decoration:none}
+.phpConfigEditor .icon:before{-webkit-font-smoothing:antialiased;font-size:2.2rem;line-height:1;font-family:'Admin Icons';
+    vertical-align:middle;display:inline-block;font-weight: normal;overflow:hidden;speak:none;text-align:center}
+.phpConfigEditor .icon:before{color:#514943}
+.phpConfigEditor.pceChanged .pceStatus{color:red}
+.phpConfigEditor .icon svg{fill:#514943}
+.phpConfigEditor a.icon:hover:before{color:#000}
+.phpConfigEditor a.icon:hover svg{fill:#000}
+.phpConfigEditor .icon-edit:before{content:'\e631'}
+.phpConfigEditor .icon-help:before{content:'\e633'}
+.phpConfigEditor .icon-check:before{content:'\e62d'}
+.phpConfigEditor .icon-svg svg{vertical-align:middle}
+.phpConfigEditor.pceFullscreen .pceFullscreenOnly{display:block}
+.phpConfigEditor .pceHead{padding-bottom:5px}
+.phpConfigEditor .pceToolbar * + .icon{margin-left:10px}
+.phpConfigEditor .pceStatus{padding-top:5px}
+
+.phpConfigEditor .ace_editor{display:none}
+.phpConfigEditor.pceFullscreen .ace_editor{display:block;position:absolute;width:100%;height:100%;margin:0}

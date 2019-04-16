@@ -18,98 +18,29 @@ abstract class Config extends AbstractField
     protected function getHeader(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $elementId = $element->getHtmlId();
-        $hash = md5($elementId);
         return <<<EOD
     <script>
-        function fs_$hash(toggle) {
-            require([
-                'jquery'
-            ], function($) {
-                if (toggle) {
-                    var id = '$elementId';
-                    var elems = id.split('_');
-                    $('#owb_$elementId').find('.page-title').text($('#carriers_' + elems[1] + '_title').val());
-                    $('#owb_$elementId').addClass('fs');
-                    $('#owb_$elementId .owb_field_container').css({
-                        top:    $('#owb_$elementId .owb_head').outerHeight(true)
-                            + parseInt($('#owb_$elementId').css('padding-top'), 10),
-                        bottom: $('#owb_$elementId .owb_foot').outerHeight(true)
-                            + parseInt($('#owb_$elementId').css('padding-bottom'), 10)
-                    });
-                } else {
-                    $('#owb_$elementId').removeClass('fs');
-                }
-            });
-        }
         require([
             'jquery'
         ], function($) {
-            $('#$elementId').on('change', function(){
-                $('#owb_$elementId').addClass('changed');
-                $('#owb_$elementId .owb_foot').text('Save Config to apply changes');
-            });
-            $('#$elementId').on('keydown', function(e) {
-                var keyCode = e.keyCode || e.which;
-                if (keyCode == 9) {
-                    e.preventDefault();
-                    var jinput = $(this);
-                    var toInsert = "\t";
-                    var startPos = this.selectionStart;
-                    var endPos = this.selectionEnd;
-                    var scrollTop = this.scrollTop;
-                    var value = jinput.val();
-                    jinput.val(value.substring(0, startPos) + toInsert + value.substring(endPos, value.length));
-                    jinput.focus();
-                    this.selectionStart = startPos + toInsert.length;
-                    this.selectionEnd = startPos + toInsert.length;
-                    this.scrollTop = scrollTop;
-                }
-            });
+            $('#$elementId').phpConfigEditor();
         });
     </script>
-    <style>
-    .owb.fs{position:fixed;top:0;left:0;right:0;bottom:0;z-index:800;background:#fff;padding:2rem}
-    .owb.fs .owb_fs_only .owb_toolbar{text-align:right}
-    .owb textarea{background:#eee;color:Teal;font-family:monospace;overflow:auto;white-space:pre;height:400px;
-        tab-size:4;display:none}
-    .owb.fs textarea{display:block;position:absolute;width:100%;height:100%;resize:none}
-    .owb.fs .owb_field_container{display:block;position:absolute;top:2rem;left:2rem;right:2rem;bottom:2rem;}
-    .owb.fs .owb_fs_hidden{display:none}
-    .owb.fs .owb_foot{position:fixed;bottom:2rem;left:2rem}
-    .owb .owb_fs_only{display:none}
-    .owb .icon span{display:none}
-    .owb a.icon{text-decoration:none}
-    .owb .icon:before{-webkit-font-smoothing:antialiased;font-size:2.2rem;line-height:1;font-family:'Admin Icons';
-        vertical-align:middle;display:inline-block;font-weight: normal;overflow:hidden;speak:none;text-align:center;}
-    .owb .icon:before{color:#514943;}
-    .owb.changed .owb_foot{color:red}
-    .owb .icon svg{fill:#514943}
-    .owb a.icon:hover:before{color:#000}
-    .owb a.icon:hover svg{fill:#000}
-    .owb .icon-edit:before{content:'\\e631';}
-    .owb .icon-help:before{content:'\\e633';}
-    .owb .icon-check:before{content:'\\e62d';}
-    .owb .icon-svg svg{vertical-align:middle}
-    .owb.fs .owb_fs_only{display:block}
-    .owb_head{padding-bottom:5px;}
-    .owb_toolbar * + .icon{margin-left:10px}
-    .owb_foot{padding-top:5px;}
-    </style>
-    <div class="owb_head">
-        <div id="owb_fh_$elementId" class="owb_fs_only">
+    <div class="pceHead">
+        <div class="pceFullscreenOnly">
             <div class="row">
                 <div class="col-l-8 col-m-6">
                     <span class="page-title">{$this->escapeHtml($this->getFullscreenTitle($element))}</span>
                 </div>
-                <div class="owb_toolbar col-l-4 col-m-6">
+                <div class="pceToolbar col-l-4 col-m-6">
                     <a target="_blank" class="icon icon-help" href="{$this->escapeHtml($this->getHelpUrl($element))}"
                         title="{$this->escapeHtml(__('Help'))}"><span>{$this->escapeHtml(__('Help'))}</span></a>
-                    <a href="#" class="icon icon-check" onclick="fs_$hash(false);"
+                    <a href="#" class="icon icon-check pceFullscreenOff"
                         title="{$this->escapeHtml(__('Reduce'))}"><span>{$this->escapeHtml(__('Reduce'))}</span></a>
                 </div>
             </div>
         </div>
-        <div class="owb_fs_hidden owb_toolbar">
+        <div class="pceFullscreenHidden pceToolbar">
             {$this->getToolbarContent($element)}
         </div>
     </div>
@@ -119,9 +50,8 @@ EOD;
     protected function getToolbarContent(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $elementId = $element->getHtmlId();
-        $hash = md5($elementId);
         return <<<EOD
-            <a href="#" class="icon icon-edit" onclick="fs_$hash(true);"
+            <a href="#" class="icon icon-edit pceFullscreenOn"
                 title="{$this->escapeHtml(__('Edit'))}"><span>{$this->escapeHtml(__('Edit'))}</span></a>
             <a target="_blank" class="icon icon-help" href="{$this->escapeHtml($this->getHelpUrl($element))}"
                 title="{$this->escapeHtml(__('Help'))}"><span>{$this->escapeHtml(__('Help'))}</span></a>
@@ -157,10 +87,10 @@ EOD;
     protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         return <<<EOD
-    <div id="owb_{$element->getHtmlId()}" class="owb">
+    <div id="pce_{$element->getHtmlId()}" class="phpConfigEditor">
         {$this->getHeader($element)}
-        <div class="owb_field_container">{$element->getElementHtml()}</div>
-        <div class="owb_foot">
+        <div class="pceFieldContainer">{$element->getElementHtml()}</div>
+        <div class="pceStatus">
             {$this->getFooterContent($element)}
         </div>
     </div>
