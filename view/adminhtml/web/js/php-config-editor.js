@@ -27,19 +27,11 @@ require([
                     });
                     if (editor) {
                         editor.resize(true);
-                        editor._muteChangeEvents = true;
-                        editor.setValue("<?php // Keep for syntax highlighting\n\n" + editor.getValue().trim() + "\n");
-                        editor._muteChangeEvents = false;
                         editor.clearSelection();
                         editor.focus();
                     }
                 } else {
                     jcontainer.removeClass('pceFullscreen');
-                    if (editor) {
-                        editor._muteChangeEvents = true;
-                        editor.setValue(editor.getValue().replace(/^<\?php(?:\s+\/\/ Keep for syntax highlighting)?\s+/, '').trim());
-                        editor._muteChangeEvents = false;
-                    }
                 }
             };
             var markChangedState = function (jcontainer) {
@@ -57,17 +49,19 @@ require([
                 });
 
             if (typeof ace !== 'undefined') {
-                var editor = ace.edit(id);
+                jinput.css('display', 'none');
+                var editorDiv = $('<div class="pceAceEditor"/>').insertBefore(jinput);
+
+                var editor = ace.edit(editorDiv[0]);
+                editor.setValue(jinput.val());
                 editor.setTheme('ace/theme/tomorrow_night');
-                editor.session.setMode('ace/mode/php');
+                editor.session.setMode({ path: 'ace/mode/php', inline: true });
                 jcontainer.data('editor', editor);
 
                 editor.session.on('change', function (delta) {
-                    if (editor._muteChangeEvents) {
-                        return;
-                    }
                     markChangedState(jcontainer);
                     editor.resize(true);
+                    jinput.val(editor.getValue());
                 });
             } else {
                 jinput
