@@ -91,6 +91,8 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
                 return $data;
             } elseif ($data instanceof \Closure) {
                 return $data;
+            } elseif ($data instanceof \Magento\Framework\Phrase) {
+                return $data->__toString();
             } elseif ($data instanceof \Magento\Quote\Model\Quote\Item) {
                 return $this->create(Wrapper\QuoteItem::class, [ 'data' => $data ]);
             } elseif ($data instanceof \Magento\Catalog\Api\Data\ProductInterface) {
