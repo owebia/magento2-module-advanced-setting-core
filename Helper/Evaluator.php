@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Helper;
@@ -707,7 +707,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             ];
             $isFunctionAllowed = in_array($functionName, $this->allowedFunctions)
                 || in_array($functionName, array_keys($map));
-            if (method_exists($this->callbackHandler, $functionName . 'Callback')) {
+            if ($this->callbackHandler->hasCallback($functionName . 'Callback')) {
                 $functionName = [ $this->callbackHandler, $functionName . 'Callback' ];
             } else {
                 if (!$isFunctionAllowed && function_exists($functionName)) {
