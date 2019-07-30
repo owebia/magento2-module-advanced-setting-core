@@ -103,7 +103,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->create(Wrapper\SourceWrapper::class, [ 'data' => $data ]);
             }
         } else {
-            throw new \Magento\Framework\Exception\LocalizedException(__("Unsupported type %s", $type));
+            throw new \Magento\Framework\Exception\LocalizedException(__("Unsupported type %1", $type));
         }
     }
 
