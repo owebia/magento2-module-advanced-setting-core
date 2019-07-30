@@ -65,7 +65,7 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param string $className
      * @param array $arguments
-     * @return Wrapper\AbstractWrapper
+     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
      */
     public function create($className, array $arguments = [])
     {

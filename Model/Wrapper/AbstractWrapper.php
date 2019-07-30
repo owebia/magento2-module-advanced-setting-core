@@ -115,7 +115,7 @@ abstract class AbstractWrapper
     /**
      * @param mixed $data
      * @param string $className
-     * @return Wrapper\AbstractWrapper
+     * @return \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper
      */
     protected function createWrapper($data, $className = null)
     {

@@ -60,7 +60,7 @@ class Product extends SourceWrapper
     /**
      * Load source model
      *
-     * @return Wrapper\Product
+     * @return $this
      */
     public function load()
     {
@@ -96,7 +96,7 @@ class Product extends SourceWrapper
 
     /**
      * {@inheritDoc}
-     * @see Wrapper\AbstractWrapper::loadData()
+     * @see \Owebia\AdvancedSettingCore\Model\Wrapper\AbstractWrapper::loadData()
      */
     protected function loadData($key)
     {
