@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -26,17 +26,17 @@ class Store extends SourceWrapper
     protected $storeRespository;
 
     /**
-     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRespository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param \Magento\Store\Api\StoreRepositoryInterface $storeRespository
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Store\Api\StoreRepositoryInterface $storeRespository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        \Magento\Store\Api\StoreRepositoryInterface $storeRespository,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, $data);

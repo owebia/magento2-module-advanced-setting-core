@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -14,17 +14,17 @@ class ProductAttributeSet extends SourceWrapper
     protected $attributeSetRespository;
 
     /**
-     * @param \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRespository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRespository
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRespository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRespository,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, $data);

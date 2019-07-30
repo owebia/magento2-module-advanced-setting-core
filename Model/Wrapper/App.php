@@ -20,17 +20,17 @@ class App extends ArrayWrapper
     protected $appState;
 
     /**
-     * @param \Magento\Framework\App\State $appState
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param \Magento\Framework\App\State $appState
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Framework\App\State $appState,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        \Magento\Framework\App\State $appState,
         $data = []
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, $data);

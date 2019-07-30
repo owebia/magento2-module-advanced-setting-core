@@ -28,17 +28,17 @@ class Product extends SourceWrapper
     protected $attributes = null;
 
     /**
-     * @param \Magento\Catalog\Model\ProductRepository $productRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param \Magento\Catalog\Model\ProductRepository $productRepository
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Catalog\Model\ProductRepository $productRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        \Magento\Catalog\Model\ProductRepository $productRepository,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, $data);

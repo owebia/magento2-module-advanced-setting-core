@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -14,17 +14,17 @@ class Customer extends SourceWrapper
     protected $customerRepository;
 
     /**
-     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, $data);

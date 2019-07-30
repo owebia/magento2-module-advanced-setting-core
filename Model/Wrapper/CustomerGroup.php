@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2018 Owebia. All rights reserved.
+ * Copyright © 2016-2019 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -14,17 +14,17 @@ class CustomerGroup extends SourceWrapper
     protected $groupRepository;
 
     /**
-     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
+     * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param mixed $data
      */
     public function __construct(
-        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
+        \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         $data = null
     ) {
         parent::__construct($objectManager, $backendAuthSession, $registry, $data);
