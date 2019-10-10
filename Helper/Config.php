@@ -6,6 +6,7 @@
 namespace Owebia\AdvancedSettingCore\Helper;
 
 use PhpParser\ParserFactory;
+use PhpParser\Node\Stmt\Nop;
 
 class Config extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -76,7 +77,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         } else {
             $stmts = $this->parsingCache[$hash];
         }
-        
+
         $this->registry = $registry;
         $this->evaluator->initialize();
         $this->evaluator->setDebug($debug);
@@ -84,6 +85,10 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         $this->evaluator->setCallbackManager($callbackManager);
 
         foreach ($stmts as $node) {
+            if ($node instanceof Nop) {
+                continue;
+            }
+
             $this->parseNode($node, $callbackManager, $debug);
             $this->evaluator->initialize();
         }

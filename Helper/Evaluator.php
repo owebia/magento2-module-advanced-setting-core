@@ -573,6 +573,10 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                     }
                 }
                 return $this->debug($expr, null);
+
+            case Node\Stmt\Nop::class:
+                return null;
+
             case Node\Name::class:
                 if (!isset($expr->parts) || count($expr->parts) != 1) {
                     return $this->error("Unsupported Name expression", $expr);
