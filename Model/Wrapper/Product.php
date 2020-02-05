@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2016-2019 Owebia. All rights reserved.
+ * Copyright © 2016-2020 Owebia. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Owebia\AdvancedSettingCore\Model\Wrapper;
@@ -92,6 +92,21 @@ class Product extends SourceWrapper
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->getSource();
         return $this->wrap($product->getAttributeText($attributeCode));
+    }
+
+    /**
+     * @return \Magento\InventoryApi\Api\Data\SourceItemInterface[]
+     */
+    public function getSourceItems()
+    {
+        /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
+        $product = $this->getSource();
+        return $this->wrap(
+            $this->objectManager->get('Magento\InventoryApi\Api\GetSourceItemsBySkuInterface')
+                ->execute(
+                    $product->getSku()
+                )
+        );
     }
 
     /**
