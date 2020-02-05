@@ -4,7 +4,7 @@ Helper Module for Magento 2 required by [owebia/magento2-module-advanced-shippin
 
 ## License
 
-Copyright © 2016-2019 Owebia. All rights reserved.
+Copyright © 2016-2020 Owebia. All rights reserved.
 
 No warranty, explicit or implicit, provided.
 
