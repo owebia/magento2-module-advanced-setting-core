@@ -514,7 +514,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             $value = $this->evl($expr->expr);
-            if (is_null($lastIndex)) {
+            if ($lastIndex === null) {
                 $tmpArray[] = $value;
             } else {
                 $tmpArray[$lastIndex] = $value;
