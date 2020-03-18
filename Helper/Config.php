@@ -73,11 +73,12 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
         $debug = false
     ) {
         $t0 = microtime(true);
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         ini_set('xdebug.max_nesting_level', '3000');
 
         $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
-        
-        $hash = md5($configuration);
+
+        $hash = hash('md5', $configuration);
         if (!isset($this->parsingCache[$hash])) {
             // $stmts is an array of statement nodes
             $stmts = $parser->parse("<?php " . $configuration . ";");
