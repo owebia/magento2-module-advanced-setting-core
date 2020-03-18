@@ -89,8 +89,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function dump()
     {
-        echo "\n";
-        echo $this->config;
+        print_r("\n" . $this->config);
         print_r($this->registry->getData());
         return $this;
     }
