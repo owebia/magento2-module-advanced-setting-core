@@ -289,22 +289,29 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
 
         return function () use ($expression, $evaluator) {
             $args = func_get_args();
-            $evaluator->registry->createScope();
+            $registry = $evaluator->registry;
+            $registry->createScope();
             try {
                 foreach ($expression->params as $param) {
                     $value = empty($args) ? $evaluator->evaluate($param) : array_shift($args);
-                    $evaluator->registry->register(isset($param->var->name) ? $param->var->name : $param->name, $this->wrap($value)); // v.3 $param->name, v.4 $param->var->name
+                    $registry->register(isset($param->var->name) ? $param->var->name : $param->name, $this->wrap($value)); // v.3 $param->name, v.4 $param->var->name
                 }
-                
+
+                foreach ($expression->uses as $use) {
+                    $varName = isset($use->var->name) ? $use->var->name : $use->var; // v.3 $use->var, v.4 $use->var->name
+                    $value = $registry->get($varName, $registry->getCurrentScopeIndex() - 1);
+                    $registry->register($varName, $this->wrap($value));
+                }
+
                 $result = $evaluator->evaluateStmts($expression->stmts);
                 if ($result instanceof Node\Stmt\Return_) {
                     $result = $evaluator->evaluate($result);
                 }
             } catch (\Exception $e) {
-                $evaluator->registry->deleteScope();
+                $registry->deleteScope();
                 throw $e;
             }
-            $evaluator->registry->deleteScope();
+            $registry->deleteScope();
             return $result;
         };
     }
