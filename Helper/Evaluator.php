@@ -935,13 +935,8 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function evalNodeExprStaticPropertyFetch(Node\Expr\StaticPropertyFetch $expr)
     {
-        $className = $this->evl($expr->class);
-        if (true) { // StaticPropertyFetch is forbidden
-            return $this->error("Unsupported StaticPropertyFetch expression", $expr);
-        }
-        $propertyName = $this->evl($expr->name);
-        $result = $this->registry->getGlobal($propertyName);
-        return $this->debug($expr, $result);
+        // StaticPropertyFetch is forbidden
+        return $this->error("Unsupported StaticPropertyFetch expression", $expr);
     }
 
     /**
