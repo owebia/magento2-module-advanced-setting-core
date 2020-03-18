@@ -638,16 +638,47 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 }
                 return $this->debug($expr, null);
             case Node\Expr\Assign::class:
-                if (!isset($expr->var->name)
-                    || !isset($expr->expr)
-                    || !($expr->var instanceof Node\Expr\Variable)
+                if (isset($expr->var->name)
+                    && isset($expr->expr)
+                    && ($expr->var instanceof Node\Expr\Variable)
                 ) {
+                    // $a = ...
+                    $variableName = $expr->var->name;
+                    $value = $this->evl($expr->expr);
+                    $this->registry->register($variableName, $value, true);
+                    return $this->debug($expr, $value);
+                } elseif (isset($expr->var->var)
+                    && isset($expr->expr)
+                    && ($expr->var instanceof Node\Expr\ArrayDimFetch)
+                ) {
+                    // $a[] = ...
+                    $rootVar = $expr->var;
+                    $indexes = [];
+                    while (isset($rootVar->var)) {
+                        $indexes[] = isset($rootVar->dim) ? $this->evl($rootVar->dim) : null;
+                        $rootVar = $rootVar->var;
+                    }
+                    $rootVariableName = $rootVar->name;
+                    $array = $this->registry->get($rootVariableName);
+                    $tmpArray =& $array;
+                    $indexes = array_reverse($indexes);
+                    $lastIndex = array_pop($indexes);
+                    foreach ($indexes as $index) {
+                        $tmpArray =& $tmpArray[$index];
+                    }
+
+                    $value = $this->evl($expr->expr);
+                    if (is_null($lastIndex)) {
+                        $tmpArray[] = $value;
+                    } else {
+                        $tmpArray[$lastIndex] = $value;
+                    }
+
+                    $this->registry->register($rootVariableName, $array, true);
+                    return $this->debug($expr, $array);
+                } else {
                     return $this->error("Unsupported Assign expression", $expr);
                 }
-                $variableName = $expr->var->name;
-                $value = $this->evl($expr->expr);
-                $this->registry->register($variableName, $value, true);
-                return $this->debug($expr, $value);
             case Node\Stmt\If_::class:
                 $cond = $this->evl($expr->cond);
                 if ($cond) {
