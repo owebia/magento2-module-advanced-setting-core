@@ -251,7 +251,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             $result = $this->evaluate($stmt);
-            if (is_array($result) && $this->doesArrayContainOnly($result, \PhpParse\AbstractNode::class)) {
+            if (is_array($result) && $this->doesArrayContainOnly($result, \PhpParser\NodeAbstract::class)) {
                 $result = $this->evaluateStmts($result);
             }
             if ($result instanceof Node\Stmt\Return_) {
@@ -264,7 +264,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected function doesArrayContainOnly($data, $className)
     {
         foreach ($data as $item) {
-            if (!$item instanceof $className) {
+            if (!is_a($item, $className)) {
                 return false;
             }
         }
