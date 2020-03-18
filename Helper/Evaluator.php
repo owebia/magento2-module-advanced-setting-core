@@ -759,12 +759,15 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 $registry->createScope();
                 try {
                     foreach ($expr->params as $param) {
+                        // v.3 $param->name, v.4 $param->var->name
+                        $varName = isset($param->var->name) ? $param->var->name : $param->name;
                         $value = empty($args) ? $evaluator->evaluate($param) : array_shift($args);
-                        $registry->register(isset($param->var->name) ? $param->var->name : $param->name, $this->wrap($value)); // v.3 $param->name, v.4 $param->var->name
+                        $registry->register($varName, $this->wrap($value));
                     }
 
                     foreach ($expr->uses as $use) {
-                        $varName = isset($use->var->name) ? $use->var->name : $use->var; // v.3 $use->var, v.4 $use->var->name
+                        // v.3 $use->var, v.4 $use->var->name
+                        $varName = isset($use->var->name) ? $use->var->name : $use->var;
                         $value = $registry->get($varName, $registry->getCurrentScopeIndex() - 1);
                         $registry->register($varName, $this->wrap($value));
                     }
