@@ -20,6 +20,7 @@ class CallbackHandlerExtension implements CallbackHandlerExtensionInterface
     public function __call($method, $arguments)
     {
         if (method_exists($this, $method)) {
+            // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
             return call_user_func_array([ $this, $method ], $arguments);
         } else {
             throw new \BadMethodCallException("Method $method not found");
