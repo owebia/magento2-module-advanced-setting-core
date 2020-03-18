@@ -347,6 +347,39 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @param \PhpParser\Node\Expr\AssignOp $expression
+     * @param callback $callback
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function assignOp($expression, $callback)
+    {
+        $variableName = $expression->var->name;
+        $value = $callback(
+            $this->registry->get($variableName),
+            $this->evl($expression->expr)
+        );
+        $this->registry->register($variableName, $value, true);
+        return $this->debug($expression, $value);
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr $expression
+     * @param int $increment
+     * @param boolean $returnAfter
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function incOp($expression, $increment, $returnAfter)
+    {
+        $variableName = $expression->var->name;
+        $oldValue = $this->registry->get($variableName);
+        $newValue = $oldValue + $increment;
+        $this->registry->register($variableName, $newValue, true);
+        return $this->debug($expression, $returnAfter ? $newValue : $oldValue);
+    }
+
+    /**
      * @param mixed $expr
      * @return mixed
      * @throws \Exception
@@ -435,7 +468,74 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->debug($expr, $this->evl($expr->left) && $this->evl($expr->right));
             case Node\Expr\BinaryOp\BooleanOr::class:
                 return $this->debug($expr, $this->evl($expr->left) || $this->evl($expr->right));
-            
+
+            // Assignment Operators
+            case Node\Expr\AssignOp\BitwiseAnd::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a & $b;
+                });
+            case Node\Expr\AssignOp\BitwiseOr::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a | $b;
+                });
+            case Node\Expr\AssignOp\BitwiseXor::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a ^ $b;
+                });
+            case 'Node\\Expr\\AssignOp\\Coalesce':
+                // Introduced in nikic/php-parser:4.*
+                // Operator ??= Introduced in PHP 7.4
+                return $this->assignOp($expr, function ($a, $b) {
+                    return isset($a) ? $a : $b; // Keep compatibility with PHP 5.6
+                });
+            case Node\Expr\AssignOp\Concat::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a . $b;
+                });
+            case Node\Expr\AssignOp\Div::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a / $b;
+                });
+            case Node\Expr\AssignOp\Minus::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a - $b;
+                });
+            case Node\Expr\AssignOp\Mod::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a % $b;
+                });
+            case Node\Expr\AssignOp\Mul::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a * $b;
+                });
+            case Node\Expr\AssignOp\Plus::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a + $b;
+                });
+            case Node\Expr\AssignOp\Pow::class:
+                // Operator ** Introduced in PHP 5.6
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a ** $b;
+                });
+            case Node\Expr\AssignOp\ShiftLeft::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a << $b;
+                });
+            case Node\Expr\AssignOp\ShiftRight::class:
+                return $this->assignOp($expr, function ($a, $b) {
+                    return $a >> $b;
+                });
+
+            // Incrementing/Decrementing Operators
+            case Node\Expr\PreDec::class:
+                return $this->incOp($expr, -1, false);
+            case Node\Expr\PreInc::class:
+                return $this->incOp($expr, 1, false);
+            case Node\Expr\PostDec::class:
+                return $this->incOp($expr, -1, true);
+            case Node\Expr\PostInc::class:
+                return $this->incOp($expr, 1, true);
+
             // Casting
             case Node\Expr\Cast\String_::class:
                 return $this->debug($expr, (string) $this->evl($expr->expr));
