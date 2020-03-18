@@ -22,6 +22,11 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     protected $debug = true;
 
     /**
+     * @var \Magento\Framework\Escaper
+     */
+    protected $escaper;
+
+    /**
      * @var \Owebia\AdvancedSettingCore\Helper\Evaluator
      */
     protected $evaluator;
@@ -38,15 +43,18 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\Escaper $escaper
      * @param \Owebia\AdvancedSettingCore\Helper\Evaluator $evaluator
      * @param \Owebia\AdvancedSettingCore\Logger\Logger $debugLogger
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\Escaper $escaper,
         \Owebia\AdvancedSettingCore\Helper\Evaluator $evaluator,
         \Owebia\AdvancedSettingCore\Logger\Logger $debugLogger
     ) {
         parent::__construct($context);
+        $this->escaper = $escaper;
         $this->evaluator = $evaluator;
         $this->debugLogger = $debugLogger;
     }
@@ -130,7 +138,7 @@ class Config extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $title = $this->evaluator->prettyPrint($node);
         $this->debugLogger->collapse(
-            "<pre class=php>" . htmlspecialchars($title) . "</pre>",
+            "<pre class=php>" . $this->escaper->escapeHtml($title) . "</pre>",
             $msg,
             $panel
         );
