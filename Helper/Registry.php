@@ -100,12 +100,16 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function wrap($data)
     {
-        $type = gettype($data);
-        if ($type == 'NULL' || $type == 'boolean' || $type == 'integer' || $type == 'double' || $type == 'string') {
+        if (!isset($data)
+            || is_bool($data)
+            || is_int($data)
+            || is_float($data)
+            || is_string($data)
+        ) {
             return $data;
-        } elseif ($type == 'array') {
+        } elseif (is_array($data)) {
             return $data;
-        } elseif ($type == 'object') {
+        } elseif (is_object($data)) {
             if ($data instanceof Wrapper\AbstractWrapper) {
                 return $data;
             } elseif ($data instanceof \Closure) {
@@ -122,7 +126,8 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->create(Wrapper\SourceWrapper::class, [ 'data' => $data ]);
             }
         } else {
-            throw new \Magento\Framework\Exception\LocalizedException(__("Unsupported type %1", $type));
+            // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
+            throw new \Magento\Framework\Exception\LocalizedException(__("Unsupported type %1", gettype($data)));
         }
     }
 
