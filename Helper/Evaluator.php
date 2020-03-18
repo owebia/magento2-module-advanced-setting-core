@@ -599,6 +599,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             // https://www.php.net/manual/en/migration74.new-features.php#migration74.new-features.core.null-coalescing-assignment-operator
             // Introduced in PHP 7.4
             // Introduced in nikic/php-parser:4.*
+            // phpcs:ignore Magento2.PHP.LiteralNamespaces.LiteralClassUsage
             case 'Node\\Expr\\AssignOp\\Coalesce':
                 return $this->evalAssignOp($expr, function ($left, $right) {
                     return isset($left) ? $left : $right; // Keep compatibility with PHP 5.6
@@ -968,6 +969,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         switch ($className) {
             // Introduced in nikic/php-parser:4.*
             // Don't use ::class to keep compatibility with nikic/php-parser:3.*
+            // phpcs:ignore Magento2.PHP.LiteralNamespaces.LiteralClassUsage
             case 'PhpParser\\Node\\Stmt\\Expression':
                 return $this->debug($expr, $this->evl($expr->expr));
 
@@ -1076,6 +1078,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         switch ($className) {
             // Introduced in nikic/php-parser:4.*
             // Don't use ::class to keep compatibility with nikic/php-parser:3.*
+            // phpcs:ignore Magento2.PHP.LiteralNamespaces.LiteralClassUsage
             case 'PhpParser\\Node\\Identifier':
                 return $this->debug($expr, (string) $expr);
 
