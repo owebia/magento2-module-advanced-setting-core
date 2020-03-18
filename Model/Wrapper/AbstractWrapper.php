@@ -97,7 +97,12 @@ abstract class AbstractWrapper
      */
     protected function convertToString($value, $variableName = null)
     {
-        if (!isset($value) || in_array(gettype($value), ['boolean', 'double', 'integer', 'string'])) {
+        if (!isset($value)
+            || is_bool($value)
+            || is_float($value)
+            || is_int($value)
+            || is_string($value)
+        ) {
             return var_export($value, true);
         } elseif (is_array($value)) {
             foreach ($value as $item) {
