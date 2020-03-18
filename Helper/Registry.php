@@ -50,15 +50,34 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
         $this->data = [
             []
         ];
-        $this->register('app',              $this->create(Wrapper\App::class));
-        $this->register('request',          $this->create(Wrapper\SourceWrapper::class, [
-            'data' => $request,
-        ]));
-        $this->register('quote',            $this->create(Wrapper\Quote::class));
-        $this->register('customer',         $this->create(Wrapper\Customer::class));
-        $this->register('customer_group',   $this->create(Wrapper\CustomerGroup::class));
-        $this->register('variable',         $this->create(Wrapper\Variable::class));
-        $this->register('store',            $this->create(Wrapper\Store::class));
+        $this->register(
+            'app',
+            $this->create(Wrapper\App::class)
+        );
+        $this->register(
+            'request',
+            $this->create(Wrapper\SourceWrapper::class, [ 'data' => $request ])
+        );
+        $this->register(
+            'quote',
+            $this->create(Wrapper\Quote::class)
+        );
+        $this->register(
+            'customer',
+            $this->create(Wrapper\Customer::class)
+        );
+        $this->register(
+            'customer_group',
+            $this->create(Wrapper\CustomerGroup::class)
+        );
+        $this->register(
+            'variable',
+            $this->create(Wrapper\Variable::class)
+        );
+        $this->register(
+            'store',
+            $this->create(Wrapper\Store::class)
+        );
         return $this;
     }
 
