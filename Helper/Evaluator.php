@@ -675,8 +675,10 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             // Logical Operators
             // https://www.php.net/manual/en/language.operators.logical.php
             case Node\Expr\BinaryOp\LogicalAnd::class:
+                // phpcs:ignore Squiz.Operators.ValidLogicalOperators.NotAllowed
                 return $this->debug($expr, $this->evl($expr->left) and $this->evl($expr->right));
             case Node\Expr\BinaryOp\LogicalOr::class:
+                // phpcs:ignore Squiz.Operators.ValidLogicalOperators.NotAllowed
                 return $this->debug($expr, $this->evl($expr->left) or $this->evl($expr->right));
             case Node\Expr\BinaryOp\LogicalXor::class:
                 return $this->debug($expr, $this->evl($expr->left) xor $this->evl($expr->right));
