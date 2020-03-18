@@ -379,7 +379,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->debug($expr, $result  !== null);
 
             case Node\Expr\Array_::class:
-                return $this->evalNodeExprArray_($expr);
+                return $this->evalNodeExprArray($expr);
 
             case Node\Expr\ArrayDimFetch::class:
                 return $this->evalNodeExprArrayDimFetch($expr);
@@ -418,7 +418,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @return mixed
      * @throws \Exception
      */
-    protected function evalNodeExprArray_(Node\Expr\Array_ $expr)
+    protected function evalNodeExprArray(Node\Expr\Array_ $expr)
     {
         $items = [];
         foreach ($expr->items as $item) {
@@ -972,7 +972,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->debug($expr, $this->evl($expr->expr));
 
             case Node\Stmt\Foreach_::class:
-                return $this->evalNodeStmtForeach_($expr);
+                return $this->evalNodeStmtForeach($expr);
 
             case Node\Stmt\Global_::class:
                 foreach ($expr->vars as $var) {
@@ -983,7 +983,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
                 return $this->debug($expr, null);
 
             case Node\Stmt\If_::class:
-                return $this->evalNodeStmtIf_($expr);
+                return $this->evalNodeStmtIf($expr);
 
             case Node\Stmt\Nop::class:
                 return null;
@@ -1001,7 +1001,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @return mixed
      * @throws \Exception
      */
-    protected function evalNodeStmtForeach_(Node\Stmt\Foreach_ $expr)
+    protected function evalNodeStmtForeach(Node\Stmt\Foreach_ $expr)
     {
         $exp = $this->evl($expr->expr);
         $valueVar = $this->evl($expr->valueVar->name);
@@ -1027,7 +1027,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      * @return mixed
      * @throws \Exception
      */
-    protected function evalNodeStmtIf_(Node\Stmt\If_ $expr)
+    protected function evalNodeStmtIf(Node\Stmt\If_ $expr)
     {
         $cond = $this->evl($expr->cond);
         if ($cond) {
