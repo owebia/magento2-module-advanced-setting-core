@@ -104,6 +104,8 @@ class Product extends SourceWrapper
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->getSource();
         return $this->wrap(
+            // Not available in old Magento2 versions
+            // phpcs:ignore Magento2.PHP.LiteralNamespaces.LiteralClassUsage
             $this->objectManager->get('Magento\InventoryApi\Api\GetSourceItemsBySkuInterface')
                 ->execute(
                     $product->getSku()
