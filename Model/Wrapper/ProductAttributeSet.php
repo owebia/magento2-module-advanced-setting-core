@@ -16,6 +16,7 @@ class ProductAttributeSet extends SourceWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
+     * @param \Magento\Framework\Escaper $escaper
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRespository
      * @param mixed $data
@@ -23,11 +24,12 @@ class ProductAttributeSet extends SourceWrapper
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
+        \Magento\Framework\Escaper $escaper,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         \Magento\Eav\Api\AttributeSetRepositoryInterface $attributeSetRespository,
         $data = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $escaper, $registry, $data);
         $this->attributeSetRespository = $attributeSetRespository;
     }
 

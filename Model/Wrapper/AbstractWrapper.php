@@ -41,6 +41,11 @@ abstract class AbstractWrapper
     protected $backendAuthSession;
 
     /**
+     * @var \Magento\Framework\Escaper
+     */
+    protected $escaper;
+
+    /**
      * @var \Owebia\AdvancedSettingCore\Helper\Registry
      */
     protected $registry;
@@ -48,17 +53,20 @@ abstract class AbstractWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
+     * @param \Magento\Framework\Escaper $escaper
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param mixed $data
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
+        \Magento\Framework\Escaper $escaper,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $data = null
     ) {
         $this->objectManager = $objectManager;
         $this->backendAuthSession = $backendAuthSession;
+        $this->escaper = $escaper;
         $this->registry = $registry;
         $this->logger = $this->objectManager->get(\Owebia\AdvancedSettingCore\Logger\Logger::class);
         $this->data = $data;
@@ -147,7 +155,9 @@ abstract class AbstractWrapper
      */
     protected function helpValue($value, $key)
     {
-        $value = htmlspecialchars($this->convertToString($this->wrap($value), $key));
+        $value = $this->escaper->escapeHtml(
+            $this->convertToString($this->wrap($value), $key)
+        );
         $value = str_replace("\n", "\n    ", $value);
         return "    " . $this->convertToString($key) . " => " . $value;
     }

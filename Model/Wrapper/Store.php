@@ -28,6 +28,7 @@ class Store extends SourceWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
+     * @param \Magento\Framework\Escaper $escaper
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param \Magento\Store\Api\StoreRepositoryInterface $storeRespository
      * @param mixed $data
@@ -35,11 +36,12 @@ class Store extends SourceWrapper
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
+        \Magento\Framework\Escaper $escaper,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         \Magento\Store\Api\StoreRepositoryInterface $storeRespository,
         $data = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $escaper, $registry, $data);
         $this->storeRespository = $storeRespository;
     }
 

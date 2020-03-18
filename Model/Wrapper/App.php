@@ -22,6 +22,7 @@ class App extends ArrayWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
+     * @param \Magento\Framework\Escaper $escaper
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param \Magento\Framework\App\State $appState
      * @param mixed $data
@@ -29,11 +30,12 @@ class App extends ArrayWrapper
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
+        \Magento\Framework\Escaper $escaper,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         \Magento\Framework\App\State $appState,
         $data = []
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $registry, $data);
+        parent::__construct($objectManager, $backendAuthSession, $escaper, $registry, $data);
         $this->appState = $appState;
     }
 

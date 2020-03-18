@@ -15,6 +15,7 @@ class Info extends ArrayWrapper
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Backend\Model\Auth\Session $backendAuthSession
+     * @param \Magento\Framework\Escaper $escaper
      * @param \Magento\Framework\HTTP\PhpEnvironment\Request $request
      * @param \Owebia\AdvancedSettingCore\Helper\Registry $registry
      * @param string $carrierCode
@@ -22,11 +23,12 @@ class Info extends ArrayWrapper
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Backend\Model\Auth\Session $backendAuthSession,
+        \Magento\Framework\Escaper $escaper,
         \Magento\Framework\HTTP\PhpEnvironment\Request $request,
         \Owebia\AdvancedSettingCore\Helper\Registry $registry,
         $carrierCode = null
     ) {
-        parent::__construct($objectManager, $backendAuthSession, $registry, [
+        parent::__construct($objectManager, $backendAuthSession, $escaper, $registry, [
             'server_os'       => PHP_OS,
             'server_software' => $request->getServerValue('SERVER_SOFTWARE'),
             'php_version'     => PHP_VERSION,
