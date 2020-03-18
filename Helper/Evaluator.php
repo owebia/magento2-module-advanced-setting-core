@@ -1100,6 +1100,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function callFunction($method, $args = [])
     {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         return call_user_func_array($method, $args);
     }
 
@@ -1110,6 +1111,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected function translateCallback(/* ...$args */)
     {
         $args = func_get_args();
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         return (string) call_user_func_array('__', $args);
     }
 
