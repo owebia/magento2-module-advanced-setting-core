@@ -74,6 +74,7 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         // Array Functions
         'array_filter',
         'array_intersect',
+        'array_key_exists',
         'array_keys',
         'array_map',
         'array_reduce',
@@ -84,6 +85,9 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
         'count',
         'in_array',
         'range',
+        // JSON Functions
+        'json_decode',
+        'json_encode',
     ];
 
     /**
