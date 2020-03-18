@@ -108,6 +108,14 @@ class Registry extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
      * @param string $name
      * @param int|null $scopeIndex
      * @return mixed
