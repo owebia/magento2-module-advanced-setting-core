@@ -106,6 +106,23 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected $prettyPrinter = null;
 
     /**
+     * @var \Magento\Framework\Escaper
+     */
+    protected $escaper;
+
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\Escaper $escaper
+     */
+    public function __construct(
+        \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\Escaper $escaper
+    ) {
+        parent::__construct($context);
+        $this->escaper = $escaper;
+    }
+
+    /**
      * @return string
      */
     public function getDebugOutput()
@@ -171,10 +188,10 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
             $uid = 'p' . uniqid();
             if ($left !== $right) {
                 $this->debugOutput[] = '<div data-target="#' . $uid . '"><pre class=php>'
-                        . htmlspecialchars($left)
+                        . $this->escaper->escapeHtml($left)
                     . '</pre>'
                     . '<div class="hidden target" id="' . $uid . '"><pre class="php result">'
-                        . htmlspecialchars("// Result\n$right")
+                        . $this->escaper->escapeHtml("// Result\n$right")
                     . '</pre></div></div>';
             }
         }
