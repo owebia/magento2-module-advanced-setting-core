@@ -1128,8 +1128,8 @@ class Evaluator extends \Magento\Framework\App\Helper\AbstractHelper
     protected function translateCallback(/* ...$args */)
     {
         $args = func_get_args();
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
-        return (string) call_user_func_array('__', $args);
+        $text = array_shift($args);
+        return (string) new \Magento\Framework\Phrase($text, $args);
     }
 
     /**
