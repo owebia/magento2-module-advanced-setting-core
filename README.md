@@ -1,4 +1,4 @@
-Deprecated, replaced by https://github.com/owebia/magento2-module-shared-php-config
+Deprecated, replaced by [owebia/magento2-module-shared-php-config](https://github.com/owebia/magento2-module-shared-php-config)
 
 ---
 
